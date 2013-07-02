@@ -1,4 +1,4 @@
-class CreateRepositories < ActiveRecord::Migration
+class CreateRepositoriesRepositories < ActiveRecord::Migration
   def change
     create_table :repositories_repositories do |t|
       t.string   :name

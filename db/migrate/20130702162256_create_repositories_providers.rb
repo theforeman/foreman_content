@@ -4,7 +4,7 @@ class CreateRepositoriesProviders < ActiveRecord::Migration
       t.string   :name
       t.text     :description
       t.string   :repository_url
-      t.string   :provider_type
+      t.string   :type
       t.timestamps
     end
   end
