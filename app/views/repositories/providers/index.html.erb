@@ -1,0 +1,19 @@
+<% title _("Custom Providers") %>
+<% title_actions display_link_if_authorized(_("New Provider"), hash_for_new_repositories_provider_path), help_path %>
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th><%= sort :name, :as => s_("Name") %></th>
+    <th></th>
+  </tr>
+  <% for provider in @providers %>
+    <tr>
+      <td><%= link_to_if_authorized(h(provider.name), main_app.hash_for_edit_repositories_provider_path(:id => provider.name)) %></td>
+      <td align="right">
+        <%= display_delete_if_authorized main_app.hash_for_repositories_provider_path(:id => provider.name), :confirm => "Delete #{provider.name}?" %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= page_entries_info @providers %>
+<%= will_paginate @providers %>

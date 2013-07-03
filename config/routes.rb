@@ -1,2 +1,5 @@
-Repositories::Engine.routes.draw do
+Foreman::Application.routes.draw do
+  namespace :repositories do
+    resources :providers
+  end
 end
