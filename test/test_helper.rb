@@ -1,15 +1,23 @@
-# Configure Rails Environment
-ENV["RAILS_ENV"] = "test"
+require 'rubygems'
+require 'bundler/setup'
 
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
-require "rails/test_help"
+ENV["RAILS_ENV"] = "test"
+require File.join("foreman_app/config/environment.rb")
+
+require 'test/unit'
+require 'repositories'
+require 'rails/test_help'
 
 Rails.backtrace_cleaner.remove_silencers!
 
-# Load support files
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+class ActiveSupport::TestCase
+  foreman_dir =  File.expand_path("../foreman_app", File.join(Dir.pwd, __FILE__))
+  fixture_path=File.join(foreman_dir, "test/fixtures")
+  fixtures :all
 
-# Load fixtures from the engine
-if ActiveSupport::TestCase.method_defined?(:fixture_path=)
-  ActiveSupport::TestCase.fixture_path = File.expand_path("../fixtures", __FILE__)
+  set_fixture_class({ :hosts => Host::Base })
+end
+
+def set_session_user
+  SETTINGS[:login] ? {:user => User.admin.id, :expires_at => 5.minutes.from_now} : {}
 end
