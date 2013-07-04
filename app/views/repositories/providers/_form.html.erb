@@ -1,0 +1,10 @@
+<%= form_for @provider, :url => (@provider.new_record? ? repositories_providers_path : repositories_provider_path(:id => @provider.id)) do |f| %>
+  <%= base_errors_for @provider %>
+  <%= text_f f, :name %>
+  <%= text_f f, :description %>
+  <%# selectable_f f, :type, Repositories::Provider::TYPES , { :include_blank => _("Choose a provider type")},
+                           {:disabled=> !@provider.new_record? ,:'data-url'=> type_selected__repositories_providers_path,:onchange => 'providerTypeSelected(this);'} %>
+
+  <%= text_f f,:repository_url,{:disabled=> f.type!="RedHat"} %>
+  <%= submit_or_cancel f %>
+<% end %>

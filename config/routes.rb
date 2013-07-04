@@ -1,7 +1,11 @@
 module Foreman
   Application.routes.draw do
     namespace :repositories do
-      resources :providers
+      resources :providers do
+        collection do
+          get 'auto_complete_search'
+        end
+      end
     end
   end
 end
