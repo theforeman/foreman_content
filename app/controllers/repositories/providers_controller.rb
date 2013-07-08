@@ -21,7 +21,7 @@ module Repositories
     end
 
     def create
-      @provider = Provider.new(params[:repositories_provider])
+      @provider = Provider.new_provider(params[:repositories_provider])
       if @provider.save
         process_success
       else
