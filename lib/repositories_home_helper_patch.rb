@@ -12,7 +12,8 @@ module RepositoriesHomeHelperPatch
     def setting_options_with_repositories_link
       choices = setting_options_without_repositories_link
       repositories_group =
-          [[_('Providers'),     :"repositories/providers"]
+          [[_('Providers'),     :"repositories/providers"],
+           [_('Gpg keys'),     :"repositories/gpg_keys"],
           #[_('Products'),      :"repositories/products"]
           #[_('Repositories'),  :"repositories/repositories"]
           ]
