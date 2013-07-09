@@ -13,3 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+function providerTypeSelected(item)
+{
+  var provider = $(item).val();
+  $("#repositories_provider_repository_url").parents(".control-group").toggle(provider == "Redhat")
+}
