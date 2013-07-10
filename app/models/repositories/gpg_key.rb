@@ -12,7 +12,7 @@
 
 module Repositories
   class GpgKey < ActiveRecord::Base
-
+    include ::Taxonomix
     MAX_CONTENT_LENGTH = 100000
 
     has_many :repositories, :inverse_of => :gpg_key
