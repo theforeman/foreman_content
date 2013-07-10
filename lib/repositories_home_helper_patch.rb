@@ -14,7 +14,7 @@ module RepositoriesHomeHelperPatch
       repositories_group =
           [[_('Providers'),     :"repositories/providers"],
            [_('Gpg keys'),     :"repositories/gpg_keys"],
-          #[_('Products'),      :"repositories/products"]
+           [_('Products'),      :"repositories/products"]
           #[_('Repositories'),  :"repositories/repositories"]
           ]
       choices.insert(3,[:divider],[:group, _("Repositories"), repositories_group])
