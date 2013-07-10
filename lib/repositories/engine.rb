@@ -1,5 +1,4 @@
 require 'repositories_home_helper_patch'
-require 'repositories/amqp'
 
 module Repositories
   class Engine < ::Rails::Engine

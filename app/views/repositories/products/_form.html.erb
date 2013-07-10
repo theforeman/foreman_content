@@ -1,0 +1,9 @@
+<%= javascript 'repositories/application.js' %>
+<%= form_for @product, :url => (@product.new_record? ? repositories_products_path : repositories_product_path(:id => @product.id)) do |f| %>
+  <%= base_errors_for @product %>
+  <%= text_f f, :name %>
+  <%= text_f f, :description %>
+  <%= select_f f, :repositories_provider_id, Repositories::Provider.all, :id, :name, {:label => _("Provider")} %>
+
+  <%= submit_or_cancel f %>
+<% end %>

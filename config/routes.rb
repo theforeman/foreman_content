@@ -12,6 +12,12 @@ module Foreman
           get 'auto_complete_search'
         end
       end
+
+      resources :products do
+        collection do
+          get 'auto_complete_search'
+        end
+      end
     end
   end
 end
