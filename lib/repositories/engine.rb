@@ -1,4 +1,6 @@
 require 'repositories_home_helper_patch'
+require 'repositories/amqp'
+
 module Repositories
   class Engine < ::Rails::Engine
     engine_name 'repositories'
@@ -12,5 +14,18 @@ module Repositories
       # Patch the menu
       ::HomeHelper.send :include, RepositoriesHomeHelperPatch
     end
+
+  end
+
+  def table_name_prefix
+    'repositories_'
+  end
+
+  def self.table_name_prefix
+    'repositories_'
+  end
+
+  def use_relative_model_naming
+    true
   end
 end
