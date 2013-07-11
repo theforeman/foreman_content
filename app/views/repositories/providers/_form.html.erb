@@ -1,11 +1,38 @@
-<%= javascript 'repositories/application.js' %>
+<%= javascript 'repositories/repository.js' %>
 <%= form_for @provider, :url => (@provider.new_record? ? repositories_providers_path : repositories_provider_path(:id => @provider.id)) do |f| %>
   <%= base_errors_for @provider %>
-  <%= text_f f, :name %>
-  <%= text_f f, :description %>
-  <%= selectable_f f, :kind, Repositories::Provider::TYPES , {:label => _("type"), :include_blank => _("Choose a provider type")},
-                           {:disabled=> !@provider.new_record? ,:onchange => 'providerTypeSelected(this);'} %>
+  <ul class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#primary" data-toggle="tab"><%= _("Provider") %></a></li>
+    <% if show_location_tab? %>
+      <li><a href="#locations" data-toggle="tab"><%= _("Locations") %></a></li>
+    <% end %>
+    <% if show_organization_tab? %>
+      <li><a href="#organizations" data-toggle="tab"><%= _("Organizations") %></a></li>
+    <% end %>
+  </ul>
 
-  <%= text_f f,:repository_url,{:class=> f.type == "Redhat" ? "" : "hide"} %>
+  <div class="tab-content">
+
+    <div class="tab-pane active" id="primary">
+      <%= text_f f, :name %>
+      <%= text_f f, :description %>
+      <%= selectable_f f, :kind, Repositories::Provider::TYPES , {},
+                       {:label => _("Type"), :disabled=> !@provider.new_record? ,:onchange => 'providerTypeSelected(this);'} %>
+
+      <%= text_f f,:repository_url %>
+    </div>
+    <% if show_location_tab? %>
+      <div class="tab-pane" id="locations">
+        <%= multiple_checkboxes f, :locations, @provider, Location,:prefix => 'repositories_provider', :label => _("Locations") %>
+      </div>
+    <% end %>
+
+    <% if show_organization_tab? %>
+      <div class="tab-pane" id="organizations">
+        <%= multiple_checkboxes f, :organizations, @provider, Organization, {:prefix => 'repositories_provider'},
+                                { :disabled => Array.wrap(Organization.current.try(:id)), :label => _("Organizations") } %>
+      </div>
+    <% end %>
+  </div>
   <%= submit_or_cancel f %>
 <% end %>
