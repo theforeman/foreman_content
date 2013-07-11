@@ -1,4 +1,5 @@
 require 'repositories_home_helper_patch'
+require 'repositories_taxonomy'
 
 module Repositories
   class Engine < ::Rails::Engine
@@ -12,6 +13,8 @@ module Repositories
     config.to_prepare do
       # Patch the menu
       ::HomeHelper.send :include, RepositoriesHomeHelperPatch
+      # Extend the taxonomy model
+      ::Taxonomy.send :include, RepositoriesTaxonomy
     end
 
   end

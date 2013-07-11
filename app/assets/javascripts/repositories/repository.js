@@ -13,9 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+$(function() {
+  providerTypeSelected($("select[id$='provider_kind']"));
+});
 
 function providerTypeSelected(item)
 {
   var provider = $(item).val();
-  $("#repositories_provider_repository_url").parents(".control-group").toggle(provider == "Redhat")
+  $("[id$='provider_repository_url']").parents(".control-group").toggle(provider == "Redhat")
 }

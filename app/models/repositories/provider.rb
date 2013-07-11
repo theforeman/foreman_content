@@ -10,6 +10,14 @@ module Repositories
 
     scoped_search :on => [:name, :description,:type], :complete_value => :true
 
+    # with proc support, default_scope can no longer be chained
+    # include all default scoping here
+    default_scope lambda {
+      with_taxonomy_scope do
+        order("name")
+      end
+    }
+
     def kind
       type =~ /Repositories::(\w+)Provider/
       $1

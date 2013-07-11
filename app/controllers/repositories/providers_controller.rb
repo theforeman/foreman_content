@@ -21,7 +21,8 @@ module Repositories
     end
 
     def create
-      @provider = Provider.new_provider(params[:repositories_provider])
+      attrs = params[:repositories_provider].merge(params[:repositories_custom_provider] ||{})
+      @provider = Provider.new_provider(attrs)
       if @provider.save
         process_success
       else
@@ -33,7 +34,8 @@ module Repositories
     end
 
     def update
-      if @provider.update_attributes(params[:repositories_provider])
+      attrs = params[:repositories_provider].merge(params[:repositories_custom_provider] ||{})
+      if @provider.update_attributes(attrs)
         process_success
       else
         process_error
