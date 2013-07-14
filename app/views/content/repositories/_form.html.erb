@@ -1,0 +1,16 @@
+<%= javascript 'content/content.js' %>
+<%= form_for @repository, :url => (@repository.new_record? ? repositories_path : repository_path(:id => @repository.id)) do |f| %>
+  <%= base_errors_for @repository %>
+  <%= text_f f, :name %>
+  <%= text_f f, :relative_path %>
+  <%= selectable_f f, :content_type, Content::Repository::TYPES, {:label => _("Content Type")} %>
+  <%= select_f f, :architecture_id, ::Architecture.all, :id, :name, { :include_blank => N_("noarch")} %>
+  <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {:label => _("Operating System")} %>
+  <%= checkbox_f f, :enabled %>
+  <%# checkbox_f f, :unprotected %>
+
+  <%= select_f f, :content_product_id, Content::Product.all, :id, :name, {:label => _("Product")} %>
+  <%= select_f f, :content_gpg_key_id, Content::GpgKey.all, :id, :name, {:label => _("GPG Key")} %>
+
+  <%= submit_or_cancel f %>
+<% end %>

@@ -1,0 +1,8 @@
+<%= javascript 'content/application.js' %>
+<%= form_for @gpg_key, :url => (@gpg_key.new_record? ? gpg_keys_path : gpg_key_path(:id => @gpg_key.id)) do |f| %>
+  <%= base_errors_for @gpg_key %>
+  <%= text_f f, :name %>
+  <%= textarea_f f, :content, :rows => 16, :class=>"span7" %>
+
+  <%= submit_or_cancel f %>
+<% end %>

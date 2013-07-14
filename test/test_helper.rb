@@ -5,7 +5,7 @@ ENV["RAILS_ENV"] = "test"
 require File.join("foreman_app/config/environment.rb")
 
 require 'test/unit'
-require 'repositories'
+require 'content'
 require 'rails/test_help'
 
 Rails.backtrace_cleaner.remove_silencers!

@@ -1,14 +1,14 @@
 $:.push File.expand_path("../lib", __FILE__)
-require "repositories/version"
+require "content/version"
 
 Gem::Specification.new do |s|
-  s.name        = "repositories"
-  s.version     = Repositories::VERSION
+  s.name        = "content"
+  s.version     = Content::VERSION
   s.authors     = [""]
   s.email       = [""]
-  s.homepage    = "https://github.com/witlessbird/repositories-engine"
-  s.summary     = "Support for content repositories."
-  s.description = "Support for content repositories."
+  s.homepage    = "https://github.com/witlessbird/content-engine"
+  s.summary     = "Support for content content."
+  s.description = "Support for content content."
   s.licenses = ["GPL-3"]
   s.extra_rdoc_files = [
     "README.md"
