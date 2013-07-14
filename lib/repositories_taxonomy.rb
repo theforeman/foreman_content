@@ -3,7 +3,7 @@ module RepositoriesTaxonomy
     base.send(:include, InstanceMethods)
 
     base.class_eval do
-      has_many :products, :through => :taxable_taxonomies, :source => :taxable, :source_type => 'Product'
+      has_many :products, :through => :taxable_taxonomies, :source => :taxable, :source_type => 'Repositories::Product'
       alias_method_chain :dup, :repositories_dup
     end
   end
