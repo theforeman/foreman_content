@@ -19,4 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "rails", "~> 3.2.13"
+  s.add_dependency "bunny", ">= 0.9.0.pre"
+  s.add_dependency "logging", ">= 1.8.0"
 end

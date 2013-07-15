@@ -1,5 +1,6 @@
 require 'repositories_home_helper_patch'
 require 'repositories_taxonomy'
+require 'repositories/candlepin_synchronization' if false # replace with true to enable Candlepin orchestration
 
 module Repositories
   class Engine < ::Rails::Engine

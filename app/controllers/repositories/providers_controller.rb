@@ -3,7 +3,7 @@ module Repositories
     before_filter :find_by_name, :only => %w{show edit update destroy}
 
     def index
-      values = Provider.search_for(params[:search], :order => params[:order])
+      values = ::Repositories::Provider.search_for(params[:search], :order => params[:order])
       respond_to do |format|
         format.html { @providers = values.paginate(:page => params[:page]) }
         format.json { render :json => values }
