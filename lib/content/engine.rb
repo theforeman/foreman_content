@@ -7,7 +7,13 @@ module Content
   class Engine < ::Rails::Engine
     engine_name Content::ENGINE_NAME
 
-    initializer "content_engine.load_app_instance_data" do |app|
+    # Load this before the Foreman config initializers, so that the Setting.descendants
+    # list includes the plugin STI setting class
+    initializer 'foreman_content.load_default_settings', :before => :load_config_initializers do |app|
+      require_dependency File.expand_path("../../../app/models/setting/content.rb", __FILE__) if (Setting.table_exists? rescue(false))
+    end
+
+    initializer "foreman_content.load_app_instance_data" do |app|
       app.config.paths['db/migrate'] += Content::Engine.paths['db/migrate'].existent
     end
 

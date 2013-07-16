@@ -8,7 +8,7 @@
     <th><%= _("Description") %></th>
     <th></th>
   </tr>
-  <% for product in @products %>
+  <% @products.each do |product| %>
     <tr>
       <td><%= link_to_if_authorized(h(product.name), hash_for_edit_product_path(:id => product.name)) %></td>
       <td><%= product.description %></td>
