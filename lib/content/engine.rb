@@ -1,6 +1,6 @@
 require 'content_home_helper_patch'
 require 'content_taxonomy'
-require 'content/candlepin_synchronization' if false # replace with true to enable Candlepin orchestration
+require 'content/candlepin/candlepin_synchronization' if false # replace with true to enable Candlepin orchestration
 
 module Content
   ENGINE_NAME = "content"
