@@ -8,10 +8,10 @@ module Content
     FILE_TYPE = 'file'
     TYPES     = [YUM_TYPE, FILE_TYPE]
 
-    belongs_to :product, :inverse_of => :repositories
-    belongs_to :gpg_key, :inverse_of => :repositories
-    belongs_to :architecture, :inverse_of => :repositories
-    belongs_to :operatingsystem, :inverse_of => :repositories, :class_name => 'Redhat'
+    belongs_to :product
+    belongs_to :gpg_key
+    belongs_to :architecture
+    belongs_to :operatingsystem, :class_name => 'Redhat'
 
     validates :product, :presence => true
     validates :name, :presence => true

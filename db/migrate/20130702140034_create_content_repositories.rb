@@ -7,11 +7,11 @@ class CreateContentRepositories < ActiveRecord::Migration
       t.string      :relative_path, :null => false
       t.string      :feed
       t.boolean     :unprotected, :default => false, :null => false
-      t.integer     :product_id, :null => false
+      t.references  :product, :null => false
       t.string      :pulp_id, :null => false # generated automatically
       t.string      :cp_label # generated automatically
       t.string      :content_id, :null => false #generated automatically
-      t.integer     :gpg_key_id
+      t.references  :gpg_key
       t.references  :operatingsystem
       t.references  :architecture
       t.timestamps
