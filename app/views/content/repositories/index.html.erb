@@ -1,17 +1,20 @@
-
-<% title _("Content") %>
+<% title _("Repositories") %>
 <% title_actions display_link_if_authorized(_("New Repository"), hash_for_new_repository_path), help_path %>
 
 <table class="table table-bordered table-striped">
   <tr>
     <th><%= sort :name, :as => s_("Name") %></th>
-    <th><%= _("Description") %></th>
+    <th><%= _("Product") %></th>
+    <th><%= _("Operating System") %></th>
+    <th><%= _("Content type") %></th>
     <th></th>
   </tr>
   <% @repositories.each do |repository| %>
     <tr>
       <td><%= link_to_if_authorized(h(repository.name), hash_for_edit_repository_path(repository)) %></td>
-      <td><%= repository.description %></td>
+      <td><%= repository.product %></td>
+      <td><%= repository.operatingsystem.try(:to_label) %></td>
+      <td><%= repository.content_type %></td>
       <td align="right">
         <%= display_delete_if_authorized hash_for_repository_path(repository), :confirm => "Delete #{repository.name}?" %>
       </td>

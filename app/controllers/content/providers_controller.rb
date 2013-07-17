@@ -1,5 +1,6 @@
 module Content
-  class ProvidersController < ApplicationController
+  class ProvidersController < ::ApplicationController
+    include Foreman::Controller::AutoCompleteSearch
     before_filter :find_by_name, :only => %w{show edit update destroy}
 
     def index
