@@ -3,21 +3,11 @@ module Content
     before_filter :find_by_name, :only => %w{show edit update destroy}
 
     def index
-      values = Repository.search_for(params[:search], :order => params[:order])
-      respond_to do |format|
-        format.html { @repositories = values.paginate(:page => params[:page]) }
-        format.json { render :json => values }
-      end
+      @repositories = Repository.search_for(params[:search], :order => params[:order]).paginate(:page => params[:page])
     end
 
     def new
       @repository = Repository.new
-    end
-
-    def show
-      respond_to do |format|
-        format.json { render :json => @repository }
-      end
     end
 
     def create
