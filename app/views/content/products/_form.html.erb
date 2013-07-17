@@ -3,7 +3,7 @@
   <%= base_errors_for @product %>
   <%= text_f f, :name %>
   <%= text_f f, :description %>
-  <%= select_f f, :content_provider_id, Content::Provider.all, :id, :name, {:label => _("Provider")} %>
+  <%= select_f f, :provider_id, Content::Provider.all, :id, :name, {:label => _("Provider")} %>
 
   <%= submit_or_cancel f %>
 <% end %>

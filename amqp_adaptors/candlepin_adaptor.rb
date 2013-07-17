@@ -14,7 +14,7 @@ queue.subscribe(:ack => false, :manual_ack => true, :block => true) do |delivery
     case j["entity"].downcase
       when "product"
         if j["operation"] == "create"
-          json = Rest::Candlepin::Product.create({ :id => j["value"]["id"],
+          json = Rest::Candlepin::Product.create({ :id => j["value"]["cp_id"],
             :name => j["value"]["name"],
             :multiplier => j["value"]["multiplier"] || 1,
             :attributes => [{:name=>"arch", :value=>"ALL"}]

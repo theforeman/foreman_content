@@ -11,6 +11,10 @@ module Content
     validates_with Validators::NameFormat, :attributes => :name
     scoped_search :on => :name
 
+    before_create do
+      self.cp_id = Foreman.uuid.gsub("-", '')
+    end
+
     after_create { ActiveSupport::Notifications.instrument('content.product.create', :entity => self) }
     after_update { ActiveSupport::Notifications.instrument('content.product.update', :entity => self) }
     after_destroy { ActiveSupport::Notifications.instrument('content.product.destroy', :id => id) }
