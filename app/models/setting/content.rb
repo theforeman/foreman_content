@@ -5,7 +5,7 @@ class Setting::Content< ::Setting
 
 
   def self.load_defaults
-    # Check the table exists
+    return unless ActiveRecord::Base.connection.table_exists?('settings')
     return unless super
 
     Setting.transaction do
