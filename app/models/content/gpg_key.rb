@@ -15,8 +15,8 @@ module Content
     include ::Taxonomix
     MAX_CONTENT_LENGTH = 100000
 
-    has_many :repositories, :inverse_of => :gpg_key
-    has_many :products, :inverse_of => :gpg_key, :class_name => "Content::Product"
+    has_many :repositories
+    has_many :products
 
     validates :name, :presence => true
     validates_with Validators::NameFormat, :attributes => :name

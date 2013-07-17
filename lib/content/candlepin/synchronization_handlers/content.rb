@@ -3,12 +3,12 @@ module Content
     module SynchronizationHandlers
       module Content
         ActiveSupport::Notifications.subscribe('content.repository.create') do |name, start, stop, tid, payload|
-          if Setting['use_candlepin']
+          if ::Setting['use_candlepin']
             require 'content/candlepin_amqp'
             ::Content::CandlepinAmqp.publish(
-                {"entity" => "repository",
-                 "operation" => "create",
-                 "value" => payload[:entity]}.to_json(:root => false, :include => [:product]).to_s)
+              { "entity"    => "repository",
+                "operation" => "create",
+                "value"     => payload[:entity] }.to_json(:root => false, :include => [:product]).to_s)
           end
         end
 

@@ -3,8 +3,8 @@ module Content
   class Product < ActiveRecord::Base
     include ::Taxonomix
 
-    belongs_to :provider, :inverse_of => :products, :class_name => "Content::Provider"
-    has_many :repositories, :inverse_of => :product, :class_name => "Content::Repository"
+    belongs_to :provider
+    has_many :repositories
 
     validates_with Validators::DescriptionFormat, :attributes => :description
     validates :name, :presence => true
@@ -12,7 +12,7 @@ module Content
     scoped_search :on => :name
 
     before_create do
-      self.cp_id = Foreman.uuid.gsub("-", '')
+      self.cp_id = Foreman.uuid.gsub('-', '')
     end
 
     after_create { ActiveSupport::Notifications.instrument('content.product.create', :entity => self) }
