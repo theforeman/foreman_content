@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.8"
   s.add_dependency "bunny", ">= 0.9.0.pre"
   s.add_dependency "logging", ">= 1.8.0"
+  s.add_dependency "runcible", "~> 0.4.10"
 end

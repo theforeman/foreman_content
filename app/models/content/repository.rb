@@ -27,11 +27,12 @@ module Content
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
 
     # TODO: move this initialization into pulp- and candlepin-specific modules
-    after_create do
+    before_create do
       self.content_id    = Foreman.uuid.gsub("-", '')
       self.pulp_id       = Foreman.uuid.gsub("-", '')
       self.cp_label      = name
       self.relative_path = custom_repo_path("acme_org", "library", product.name, name)
+      self.description = ["acme_org", "library", product.name, name].join("/")
     end
 
     after_create { ActiveSupport::Notifications.instrument('content.repository.create', :entity => self) }

@@ -1,6 +1,7 @@
 require 'content_home_helper_patch'
 require 'content_taxonomy'
 require 'content/candlepin/candlepin_synchronization'
+require 'content/pulp/pulp_synchronization'
 
 module Content
   ENGINE_NAME = "content"
