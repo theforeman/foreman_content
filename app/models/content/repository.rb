@@ -27,7 +27,7 @@ module Content
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
 
     # TODO: move this initialization into pulp- and candlepin-specific modules
-    after_create do
+    before_create do
       self.content_id    = Foreman.uuid.gsub("-", '')
       self.pulp_id       = Foreman.uuid.gsub("-", '')
       self.cp_label      = name
