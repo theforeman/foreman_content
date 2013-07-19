@@ -11,7 +11,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 require 'rest_client'
-require './lib/rest/http_resource'
+require File.dirname(File.absolute_path(__FILE__)) + '/http_resource'
 require 'oauth'
 require 'cgi'
 require 'active_support/core_ext/class/attribute'

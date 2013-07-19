@@ -2,6 +2,7 @@ class CreateContentRepositories < ActiveRecord::Migration
   def change
     create_table    :content_repositories do |t|
       t.string      :name, :null => false
+      t.string      :description
       t.string      :content_type, :default => "yum", :null => false
       t.boolean     :enabled, :default => true
       t.string      :relative_path, :null => false
