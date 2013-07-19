@@ -2,7 +2,7 @@ require 'runcible'
 require 'logging'
 
 ::Runcible::Base.config = {
-  :url      => "https://katello-a.appliedlogic.ca",
+  :url      => "https://localhost",
   :api_path => "/pulp/api/v2/",
   :user     => "admin",
   :timeout      => 60,
