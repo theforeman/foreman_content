@@ -2,15 +2,19 @@
 <%= form_for @repository, :url => (@repository.new_record? ? repositories_path : repository_path(:id => @repository.id)) do |f| %>
   <%= base_errors_for @repository %>
   <%= text_f f, :name %>
-  <%= text_f f, :relative_path %>
+  <%= text_f f, :feed, :class => 'span6' %>
   <%= selectable_f f, :content_type, Content::Repository::TYPES %>
   <%= select_f f, :architecture_id, ::Architecture.all, :id, :name, { :include_blank => N_("noarch")} %>
   <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
   <%= checkbox_f f, :enabled %>
-  <%# checkbox_f f, :unprotected %>
+  <%= checkbox_f f, :unprotected %>
 
   <%= select_f f, :product_id, Content::Product.all, :id, :name, {}, {:label => _("Product")} %>
-  <%= select_f f, :gpg_key_id, Content::GpgKey.all, :id, :name, {}, {:label => _("GPG Key")} %>
+  <%= select_f f, :gpg_key_id, Content::GpgKey.all, :id, :name, {:include_blank => true}, {:label => _("GPG Key")} %>
+
+  <% unless @repository.new_record? %>
+     <%= text_f f, :relative_path, :disabled => true %>
+  <% end %>
 
   <%= submit_or_cancel f %>
 <% end %>
