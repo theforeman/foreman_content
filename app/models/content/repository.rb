@@ -11,7 +11,7 @@ module Content
     belongs_to :product
     belongs_to :gpg_key
     belongs_to :architecture
-    belongs_to :operatingsystem, :class_name => 'Redhat'
+    has_and_belongs_to_many :operatingsystem, :class_name => 'Redhat'
 
     validates :product, :presence => true
     validates :name, :presence => true
