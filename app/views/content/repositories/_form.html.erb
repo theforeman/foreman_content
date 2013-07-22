@@ -3,6 +3,7 @@
   <%= base_errors_for @repository %>
   <%= text_f f, :name %>
   <%= text_f f, :relative_path %>
+  <%= select_f f, :gpg_key_id, Content::GpgKey.all, :id, :name, {}, {:label => _("GPG Key")} %>
   <%= selectable_f f, :content_type, Content::Repository::TYPES %>
   <%= select_f f, :architecture_id, ::Architecture.all, :id, :name, { :include_blank => N_("noarch")} %>
   <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>

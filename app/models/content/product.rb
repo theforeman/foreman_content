@@ -3,8 +3,13 @@ module Content
   class Product < ActiveRecord::Base
     include ::Taxonomix
 
+
     belongs_to :provider
     has_many :repositories
+    has_many :environment_products, :dependent => :destroy, :uniq=>true
+    has_many :environments, :through => :environment_products
+    accepts_nested_attributes_for :environment_products, :allow_destroy => true, :reject_if => :all_blank
+    accepts_nested_attributes_for :environments
 
     validates_with Validators::DescriptionFormat, :attributes => :description
     validates :name, :presence => true

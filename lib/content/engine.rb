@@ -1,6 +1,8 @@
 require 'content_home_helper_patch'
 require 'content_taxonomy'
 require 'content/candlepin/candlepin_synchronization'
+require 'content_environment'
+
 
 module Content
   ENGINE_NAME = "content"
@@ -23,6 +25,8 @@ module Content
       ::HomeHelper.send :include, ContentHomeHelperPatch
       # Extend the taxonomy model
       ::Taxonomy.send :include, ContentTaxonomy
+      # Extend the environment model
+      ::Environment.send :include, ContentEnvironment
     end
   end
 
