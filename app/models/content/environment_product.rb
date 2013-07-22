@@ -17,8 +17,7 @@ module Content
 
     def self.find_or_create(env, product)
       item = EnvironmentProduct.where(:environment_id=> env.id, :product_id=> product.id).first
-      item ||= EnvironmentProduct.create!(:environment=> env, :product=> product)
-      item
+      item || EnvironmentProduct.create!(:environment=> env, :product=> product)
     end
   end
 end
