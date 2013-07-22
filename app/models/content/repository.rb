@@ -1,8 +1,11 @@
+require 'content/orchestration/pulp'
 # TODO: split into a custom and red hat repositories:
 # as handling of repo creation/updates is different between them
 module Content
   class Repository < ActiveRecord::Base
     include CustomRepositoryPaths
+    include ::Orchestration
+    include Content::Orchestration::Pulp
 
     YUM_TYPE  = 'yum'
     FILE_TYPE = 'file'
@@ -27,15 +30,18 @@ module Content
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
 
     # TODO: move this initialization into pulp- and candlepin-specific modules
-    after_create do
-      self.content_id    = Foreman.uuid.gsub("-", '')
-      self.pulp_id       = Foreman.uuid.gsub("-", '')
-      self.cp_label      = name
-      self.relative_path = custom_repo_path("acme_org", "library", product.name, name)
+    before_create do
+      self.content_id = Foreman.uuid.gsub("-", '')
+      self.cp_label   = name
     end
 
-    after_create { ActiveSupport::Notifications.instrument('content.repository.create', :entity => self) }
-    after_update { ActiveSupport::Notifications.instrument('content.repository.update', :entity => self) }
-    after_destroy { ActiveSupport::Notifications.instrument('content.repository.destroy', :id => id) }
+    def orchestration_errors?
+      errors.empty?
+    end
+
+    def update_cache
+      nil
+    end
+
   end
 end
