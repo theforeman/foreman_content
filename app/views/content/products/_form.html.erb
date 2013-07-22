@@ -1,9 +1,10 @@
-<%= javascript 'content/application.js' %>
-<%= form_for @product, :url => (@product.new_record? ? products_path : product_path(:id => @product.id)) do |f| %>
+<%= javascript 'content/content.js' %>
+<%= form_for @product, :url => (@product.new_record? ? products_path : product_path(@product)) do |f| %>
   <%= base_errors_for @product %>
   <%= text_f f, :name %>
   <%= text_f f, :description %>
-  <%= select_f f, :provider_id, Content::Provider.all, :id, :name, {:label => _("Provider")} %>
+  <%= multiple_selects(f, :environments, Environment, f.object.environment_ids) %>
+  <%= select_f f, :provider_id, Content::Provider.all, :id, :name,{}, {:label => _("Provider")} %>
 
   <%= submit_or_cancel f %>
 <% end %>
