@@ -2,6 +2,7 @@ require 'content_home_helper_patch'
 require 'content_taxonomy'
 require 'content/candlepin/candlepin_synchronization'
 require 'content_environment'
+require 'content_operatingsystem'
 
 
 module Content
@@ -27,6 +28,8 @@ module Content
       ::Taxonomy.send :include, ContentTaxonomy
       # Extend the environment model
       ::Environment.send :include, ContentEnvironment
+      # Extend OS model
+      ::Operatingsystem.send :include, ContentOperatingsystem
     end
   end
 

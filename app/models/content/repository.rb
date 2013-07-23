@@ -14,7 +14,10 @@ module Content
     belongs_to :product
     belongs_to :gpg_key
     belongs_to :architecture
-    has_and_belongs_to_many :operatingsystem, :class_name => 'Redhat'
+    has_many :operatingsystem_repositories, :dependent => :destroy, :uniq=>true
+    has_many :operatingsystems, :through => :operatingsystem_repositories
+    accepts_nested_attributes_for :operatingsystem_repositories, :allow_destroy => true, :reject_if => :all_blank
+    accepts_nested_attributes_for :operatingsystems
 
     validates :product, :presence => true
     validates :name, :presence => true

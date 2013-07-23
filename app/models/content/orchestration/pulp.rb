@@ -11,7 +11,7 @@ module Content::Orchestration::Pulp
   end
 
   def pulp?
-    @use_pulp ||= Setting.use_pulp
+    @use_pulp ||= Setting.use_pulp and enabled?
   end
 
   def sync_status
@@ -26,7 +26,6 @@ module Content::Orchestration::Pulp
     self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name)
 
     Runcible::Base.config = runcible_config
-
   end
 
   def queue_pulp
