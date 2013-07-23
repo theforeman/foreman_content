@@ -1,6 +1,5 @@
 require 'content_home_helper_patch'
 require 'content_taxonomy'
-require 'content/candlepin/candlepin_synchronization'
 require 'content_environment'
 require 'content_operatingsystem'
 
