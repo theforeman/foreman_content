@@ -8,7 +8,12 @@ module Content
     has_many :environment_products, :dependent => :destroy, :uniq=>true
     has_many :environments, :through => :environment_products
     accepts_nested_attributes_for :environment_products, :allow_destroy => true, :reject_if => :all_blank
-    accepts_nested_attributes_for :environments
+
+    has_many :hostgroup_products, :dependent => :destroy, :uniq=>true
+    has_many :hostgroups, :through => :hostgroup_products
+
+    has_many :host_products, :dependent => :destroy, :uniq=>true
+    has_many :hosts, :through => :host_products
 
     validates_with Validators::DescriptionFormat, :attributes => :description
     validates :name, :presence => true

@@ -10,13 +10,13 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 module Content
-  class EnvironmentProduct < ActiveRecord::Base
+  class HostProduct < ActiveRecord::Base
     belongs_to :product
-    belongs_to :environment
+    belongs_to :host
 
-    def self.find_or_create(env, product)
-      item = EnvironmentProduct.where(:environment_id=> env.id, :product_id=> product.id).first
-      item || EnvironmentProduct.create!(:environment=> env, :product=> product)
+    def self.find_or_create(host, product)
+      item = HostProduct.where(:host_id=> host.id, :product_id=> product.id).first
+      item || HostProduct.create!(:host=> host, :product=> product)
     end
   end
 end

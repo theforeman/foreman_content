@@ -2,6 +2,8 @@ require 'content_home_helper_patch'
 require 'content_taxonomy'
 require 'content_environment'
 require 'content_operatingsystem'
+require 'content_hostgroup'
+require 'content_host'
 
 
 module Content
@@ -29,6 +31,10 @@ module Content
       ::Environment.send :include, ContentEnvironment
       # Extend OS model
       ::Operatingsystem.send :include, ContentOperatingsystem
+      # Extend the hostgroup model
+      ::Hostgroup.send :include, ContentHostgroup
+      # Extend the host model
+      ::Host.send :include, ContentHost
     end
   end
 
