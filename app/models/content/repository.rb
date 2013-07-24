@@ -1,8 +1,11 @@
+require 'content/orchestration/pulp'
 # TODO: split into a custom and red hat repositories:
 # as handling of repo creation/updates is different between them
 module Content
   class Repository < ActiveRecord::Base
     include CustomRepositoryPaths
+    include ::Orchestration
+    include Content::Orchestration::Pulp
 
     YUM_TYPE  = 'yum'
     FILE_TYPE = 'file'
@@ -11,7 +14,8 @@ module Content
     belongs_to :product
     belongs_to :gpg_key
     belongs_to :architecture
-    belongs_to :operatingsystem, :class_name => 'Redhat'
+    has_many :operatingsystem_repositories, :dependent => :destroy, :uniq=>true
+    has_many :operatingsystems, :through => :operatingsystem_repositories
 
     validates :product, :presence => true
     validates :name, :presence => true
@@ -26,16 +30,13 @@ module Content
     scoped_search :in => :architectures, :on => :name, :rename => :architecture, :complete_value => :true
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
 
-    # TODO: move this initialization into pulp- and candlepin-specific modules
-    after_create do
-      self.content_id    = Foreman.uuid.gsub("-", '')
-      self.pulp_id       = Foreman.uuid.gsub("-", '')
-      self.cp_label      = name
-      self.relative_path = custom_repo_path("acme_org", "library", product.name, name)
+    def orchestration_errors?
+      errors.empty?
     end
 
-    after_create { ActiveSupport::Notifications.instrument('content.repository.create', :entity => self) }
-    after_update { ActiveSupport::Notifications.instrument('content.repository.update', :entity => self) }
-    after_destroy { ActiveSupport::Notifications.instrument('content.repository.destroy', :id => id) }
+    def update_cache
+      nil
+    end
+
   end
 end
