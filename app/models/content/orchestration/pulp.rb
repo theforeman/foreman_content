@@ -49,6 +49,8 @@ module Content::Orchestration::Pulp
                                                                            [pulp_distributor],
                                                                            { :display_name => relative_path,
                                                                              :description  => description })
+  rescue => e
+    raise (JSON.parse e.response)['error_message']
   end
 
   def del_pulp_repo
