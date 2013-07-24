@@ -1,7 +1,8 @@
 module Content
   class Provider < ActiveRecord::Base
     include ::Taxonomix
-    TYPES = %w[ Redhat Custom ] #todo: add puppet environment and debian provider types
+    REDHAT_TYPE, CUSTOM_TYPE, DEBIAN_TYPE, PUPPET_TYPE = "Redhat", "Custom", "Debian", "Puppet"
+    TYPES = [ REDHAT_TYPE, CUSTOM_TYPE ] #todo: add puppet and debian provider types
 
     has_many :products, :inverse_of => :provider
 
