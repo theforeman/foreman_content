@@ -34,7 +34,7 @@ module Content
       # Extend the hostgroup model
       ::Hostgroup.send :include, ContentHostgroup
       # Extend the host model
-      ::Host.send :include, ContentHost
+      ::Host::Managed.send :include, ContentHost
     end
   end
 
