@@ -100,9 +100,10 @@ module Content::Orchestration::Pulp
   end
 
   def runcible_config
+    pulp_url = URI(Setting['pulp_url'])
     {
-      :url          => "https://amos-dev.sat.lab.tlv.redhat.com",
-      :api_path     => "/pulp/api/v2/",
+      :url          => "#{pulp_url.scheme}://#{pulp_url.host}:#{pulp_url.port}",
+      :api_path     => pulp_url.path,
       :user         => "admin",
       :timeout      => 60,
       :open_timeout => 60,
