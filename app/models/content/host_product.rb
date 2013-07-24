@@ -13,10 +13,8 @@ module Content
   class HostProduct < ActiveRecord::Base
     belongs_to :product
     belongs_to :host
+    validates_presence_of :product_id, :host_id
+    validates_uniqueness_of :product_id, :scope => :host_id
 
-    def self.find_or_create(host, product)
-      item = HostProduct.where(:host_id=> host.id, :product_id=> product.id).first
-      item || HostProduct.create!(:host=> host, :product=> product)
-    end
   end
 end

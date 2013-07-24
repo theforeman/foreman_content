@@ -5,11 +5,7 @@
   <%= text_f f, :feed, :class => 'span6' %>
   <%= selectable_f f, :content_type, Content::Repository::TYPES %>
   <%= select_f f, :architecture_id, ::Architecture.all, :id, :name, { :include_blank => N_("noarch")} %>
-  <% if false #@repository.provider.try(:type) == Content::Provider::REDHAT_TYPE %>
-    <%= select_f f, :operatingsystem_ids, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
-  <% else %>
-    <%= multiple_selects(f, :operatingsystems, ::Redhat, f.object.operatingsystem_ids) %>
-  <% end %>
+  <%= multiple_selects(f, :operatingsystems, ::Redhat, f.object.operatingsystem_ids) %>
   <%= checkbox_f f, :enabled %>
   <%= checkbox_f f, :unprotected %>
 

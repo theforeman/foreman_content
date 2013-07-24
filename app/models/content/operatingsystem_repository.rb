@@ -13,10 +13,7 @@ module Content
   class OperatingsystemRepository < ActiveRecord::Base
     belongs_to :operatingsystem
     belongs_to :repository
-
-    def self.find_or_create(os, repo)
-      item = OperatingsystemRepository.where(:operatingsystem_id=> os.id, :repository_id=> repo.id).first
-      item || OperatingsystemRepository.create!(:operatingsystem=> os, :repository=> repo)
-    end
+    validates_presence_of :operatingsystem_id, :repository_id
+    validates_uniqueness_of :operatingsystem_id, :scope => :repository_id
   end
 end

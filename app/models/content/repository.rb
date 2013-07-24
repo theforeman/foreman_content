@@ -16,8 +16,6 @@ module Content
     belongs_to :architecture
     has_many :operatingsystem_repositories, :dependent => :destroy, :uniq=>true
     has_many :operatingsystems, :through => :operatingsystem_repositories
-    accepts_nested_attributes_for :operatingsystem_repositories, :allow_destroy => true, :reject_if => :all_blank
-    accepts_nested_attributes_for :operatingsystems
 
     validates :product, :presence => true
     validates :name, :presence => true
@@ -31,11 +29,6 @@ module Content
     scoped_search :on => [:name, :enabled], :complete_value => :true
     scoped_search :in => :architectures, :on => :name, :rename => :architecture, :complete_value => :true
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
-
-    before_create do
-      self.content_id = Foreman.uuid.gsub("-", '')
-      self.cp_label   = name
-    end
 
     def orchestration_errors?
       errors.empty?

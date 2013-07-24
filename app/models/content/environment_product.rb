@@ -13,10 +13,7 @@ module Content
   class EnvironmentProduct < ActiveRecord::Base
     belongs_to :product
     belongs_to :environment
-
-    def self.find_or_create(env, product)
-      item = EnvironmentProduct.where(:environment_id=> env.id, :product_id=> product.id).first
-      item || EnvironmentProduct.create!(:environment=> env, :product=> product)
-    end
+    validates_presence_of :product_id, :environment_id
+    validates_uniqueness_of :product_id, :scope => :environment_id
   end
 end

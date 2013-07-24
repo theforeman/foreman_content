@@ -7,7 +7,6 @@ module Content
     has_many :repositories
     has_many :environment_products, :dependent => :destroy, :uniq=>true
     has_many :environments, :through => :environment_products
-    accepts_nested_attributes_for :environment_products, :allow_destroy => true, :reject_if => :all_blank
 
     has_many :hostgroup_products, :dependent => :destroy, :uniq=>true
     has_many :hostgroups, :through => :hostgroup_products

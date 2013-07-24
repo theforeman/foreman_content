@@ -15,7 +15,9 @@ module Content::Orchestration::Pulp
   end
 
   def sync_status
-    Runcible::Extensions::Repository.sync_status(pulp_id) if pulp? && pulp_id
+    initialize_pulp if pulp?
+    status = Runcible::Extensions::Repository.sync_status(pulp_id) if pulp? && pulp_id
+    status.first ? status.first[:state] : ''
   end
 
   protected
@@ -49,7 +51,7 @@ module Content::Orchestration::Pulp
                                                                            [pulp_distributor],
                                                                            { :display_name => relative_path,
                                                                              :description  => description })
-  rescue => e
+  rescue RestClient::BadRequest => e
     raise (JSON.parse e.response)['error_message']
   end
 
@@ -63,15 +65,12 @@ module Content::Orchestration::Pulp
 
   def del_sync_pulp_repo
     status = sync_status
-    return if status.blank? || status.state == ::PulpSyncStatus::Status::NOT_SYNCED
+    return if status.blank? || status == ::PulpSyncStatus::Status::NOT_SYNCED
     Runcible::Resources::Task.cancel(status.uuid)
   end
 
   def pulp_importer
     options = {
-      #:ssl_ca_cert     => feed_ca,
-      #:ssl_client_cert => feed_cert,
-      #:ssl_client_key  => feed_key,
       :feed_url => feed
     }
 
