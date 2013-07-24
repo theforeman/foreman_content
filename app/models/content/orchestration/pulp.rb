@@ -106,7 +106,7 @@ module Content::Orchestration::Pulp
   end
 
   def runcible_config
-    pulp_url = URI(Setting['pulp_url'])
+    pulp_url = URI(Setting.pulp_url)
     {
       :url          => "#{pulp_url.scheme}://#{pulp_url.host}:#{pulp_url.port}",
       :api_path     => pulp_url.path,

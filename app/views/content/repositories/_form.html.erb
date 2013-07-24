@@ -13,7 +13,7 @@
   <%= select_f f, :gpg_key_id, Content::GpgKey.all, :id, :name, {:include_blank => true}, {:label => _("GPG Key")} %>
 
   <% unless @repository.new_record? %>
-     <%= text_f f, :relative_path, :disabled => true %>
+     <%= text_f f, :full_path, :disabled => true, :class => 'span6' %>
   <% end %>
 
   <%= submit_or_cancel f %>

@@ -30,12 +30,20 @@ module Content
     scoped_search :in => :architectures, :on => :name, :rename => :architecture, :complete_value => :true
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
 
+    scope :for_host, lambda {|host| includes({:product=>:environments}).
+        where(:architecture_id=>host.architecture_id,:content_environment_products=>{:environment_id=>host.environment_id})}
+
     def orchestration_errors?
       errors.empty?
     end
 
     def update_cache
       nil
+    end
+
+    def full_path
+      pulp_url = URI(Setting.pulp_url)
+      "#{pulp_url.scheme}://#{pulp_url.host}:#{pulp_url.port}/pulp/repos/#{relative_path}"
     end
 
   end
