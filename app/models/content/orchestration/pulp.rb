@@ -45,6 +45,9 @@ module Content::Orchestration::Pulp
                  :action => [self, :set_sync_pulp_repo])
   end
 
+  def queue_pulp_update
+  end
+
   def set_pulp_repo
     Runcible::Extensions::Repository.create_with_importer_and_distributors(pulp_id,
                                                                            pulp_importer,
