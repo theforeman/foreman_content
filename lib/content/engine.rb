@@ -2,6 +2,7 @@ require 'content_home_helper_patch'
 require 'content_taxonomy'
 require 'content_environment'
 require 'content_operatingsystem'
+require 'content_redhat'
 require 'content_hostgroup'
 require 'content_host'
 
@@ -32,6 +33,8 @@ module Content
       ::Environment.send :include, ContentEnvironment
       # Extend OS model
       ::Operatingsystem.send :include, ContentOperatingsystem
+      # Extend RedHat OS family model
+      ::Redhat.send :include, ContentRedhat
       # Extend the hostgroup model
       ::Hostgroup.send :include, ContentHostgroup
       # Extend the host model

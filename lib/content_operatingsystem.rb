@@ -9,8 +9,5 @@ module ContentOperatingsystem
   end
 
   module InstanceMethods
-    def medium_uri host
-      self.repositories.for_host(host).first.try(:full_path) || super
-    end
   end
 end

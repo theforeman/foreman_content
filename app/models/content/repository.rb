@@ -8,8 +8,9 @@ module Content
     include Content::Orchestration::Pulp
 
     YUM_TYPE  = 'yum'
-    FILE_TYPE = 'file'
-    TYPES     = [YUM_TYPE, FILE_TYPE]
+    KICKSTART_TYPE = 'kickstart'
+    FILE_TYPE = 'iso'
+    TYPES     = [YUM_TYPE, KICKSTART_TYPE, FILE_TYPE]
 
     belongs_to :product
     belongs_to :gpg_key
@@ -31,7 +32,10 @@ module Content
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
 
     scope :for_host, lambda {|host| includes({:product=>:environments}).
-        where(:architecture_id=>host.architecture_id,:content_environment_products=>{:environment_id=>host.environment_id})}
+        where(:architecture_id=>[nil,host.architecture_id],:content_environment_products=>{:environment_id=>host.environment_id})}
+
+    scope :kickstart, where(:content_type=>KICKSTART_TYPE)
+    scope :yum, where(:content_type=>YUM_TYPE)
 
     def orchestration_errors?
       errors.empty?
@@ -42,8 +46,9 @@ module Content
     end
 
     def full_path
-      pulp_url = URI(Setting.pulp_url)
-      "#{pulp_url.scheme}://#{pulp_url.host}:#{pulp_url.port}/pulp/repos/#{relative_path}"
+      pulp_url = URI.parse(Setting.pulp_url)
+      scheme = (unprotected ? 'http' : 'https')
+      "#{scheme}://#{pulp_url.host}:#{pulp_url.port}/pulp/repos/#{relative_path}"
     end
 
   end
