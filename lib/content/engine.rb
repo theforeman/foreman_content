@@ -19,6 +19,7 @@ module Content
 
     initializer "foreman_content.load_app_instance_data" do |app|
       app.config.paths['db/migrate'] += Content::Engine.paths['db/migrate'].existent
+      app.config.autoload_paths += Dir["#{config.root}/app/services)"]
     end
 
     # Include extensions to models in this config.to_prepare block
