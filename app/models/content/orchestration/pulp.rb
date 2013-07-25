@@ -1,5 +1,4 @@
 require 'runcible'
-require 'logging'
 
 module Content::Orchestration::Pulp
   extend ActiveSupport::Concern
@@ -110,9 +109,9 @@ module Content::Orchestration::Pulp
       :user         => "admin",
       :timeout      => 60,
       :open_timeout => 60,
-      :oauth        => { :oauth_secret => "+7cs4WhVrTM7D+kgQv98Qbnt3wO096pB",
-                         :oauth_key    => "katello" },
-      :logging      => { :logger    => ::Logging.logger['pulp_rest'],
+      :oauth        => { :oauth_secret => Setting['pulp_oauth_secret'],
+                         :oauth_key    => Setting['pulp_oauth_key'] },
+      :logging      => { :logger    => logger,
                          :exception => true,
                          :debug     => true }
     }
