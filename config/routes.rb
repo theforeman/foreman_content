@@ -23,5 +23,14 @@ Rails.application.routes.draw do
         get 'auto_complete_search'
       end
     end
+
+    namespace :api do
+      resources :repositories do
+        collection do
+          post 'events'
+        end
+      end
+    end
+
   end
 end
