@@ -13,6 +13,10 @@ module Content::Orchestration::Pulp
     @use_pulp ||= Setting.use_pulp and enabled?
   end
 
+  def sync
+    Runcible::Resources::Repository.sync(pulp_id)
+  end
+
   def sync_status
     initialize_pulp if pulp?
     status = Runcible::Extensions::Repository.sync_status(pulp_id) if pulp? && pulp_id
@@ -62,7 +66,7 @@ module Content::Orchestration::Pulp
   end
 
   def set_sync_pulp_repo
-    Runcible::Resources::Repository.sync(pulp_id)
+    sync
   end
 
   def del_sync_pulp_repo
