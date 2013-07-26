@@ -11,7 +11,6 @@ class Setting::Content< ::Setting
     Setting.transaction do
       [
         self.set('use_pulp', "Use Pulp to manage content", true),
-        self.set('pulp_url', "Pulp URL", "https://127.0.0.1/pulp/api/v2/")
         self.set('pulp_url', "Pulp URL", "https://127.0.0.1/pulp/api/v2/"),
         self.set('pulp_oauth_secret', "Pulp OAuth Secret", ""),
         self.set('pulp_oauth_key', "Pulp OAuth Key", ""),
