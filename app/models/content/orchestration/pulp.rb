@@ -13,6 +13,10 @@ module Content::Orchestration::Pulp
     @use_pulp ||= Setting.use_pulp and enabled?
   end
 
+  def sync
+    Runcible::Resources::Repository.sync(pulp_id)
+  end
+
   def sync_status
     initialize_pulp if pulp?
     status = Runcible::Extensions::Repository.sync_status(pulp_id) if pulp? && pulp_id
@@ -41,7 +45,7 @@ module Content::Orchestration::Pulp
     queue.create(:name   => _("Create Pulp Repository for %s") % self, :priority => 10,
                  :action => [self, :set_pulp_repo])
     queue.create(:name   => _("Sync Pulp Repository %s") % self, :priority => 20,
-                 :action => [self, :set_sync_pulp_repo])
+                 :action => [self, :sync])
   end
 
   def queue_pulp_update
@@ -59,10 +63,6 @@ module Content::Orchestration::Pulp
 
   def del_pulp_repo
     Runcible::Resources::Repository.delete(pulp_id)
-  end
-
-  def set_sync_pulp_repo
-    Runcible::Resources::Repository.sync(pulp_id)
   end
 
   def del_sync_pulp_repo
