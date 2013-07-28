@@ -7,9 +7,12 @@ module ContentRedhat
   end
 
   module InstanceMethods
-    def medium_uri_with_content_uri host
-      full_path = self.repositories.for_host(host).kickstart.first.try(:full_path)
-      full_path ? URI.parse(full_path) : medium_uri_without_content_uri(host)
+    def medium_uri_with_content_uri host, url = nil
+      if  url.nil? && (full_path = self.repositories.for_host(host).kickstart.first.try(:full_path))
+        URI.parse(full_path)
+      else
+        medium_uri_without_content_uri(host, url)
+      end
     end
 
     def repos host
@@ -20,7 +23,7 @@ module ContentRedhat
     def repo_to_hash repo
       {
         :baseurl => repo.full_path,
-        :name => repo.product.name,
+        :name => repo.to_label,
         :description => repo.product.description,
         :enabled => repo.enabled,
         :gpgcheck => !!repo.gpg_key
