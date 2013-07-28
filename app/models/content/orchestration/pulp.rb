@@ -81,7 +81,7 @@ module Content::Orchestration::Pulp
     }
 
     case content_type
-      when Content::Repository::YUM_TYPE
+      when Content::Repository::YUM_TYPE, Content::Repository::KICKSTART_TYPE
         Runcible::Extensions::YumImporter.new(options)
       when Content::Repository::FILE_TYPE
         Runcible::Extensions::IsoImporter.new(options)
@@ -92,7 +92,7 @@ module Content::Orchestration::Pulp
 
   def pulp_distributor
     case content_type
-      when Content::Repository::YUM_TYPE
+      when Content::Repository::YUM_TYPE, Content::Repository::KICKSTART_TYPE
         Runcible::Extensions::YumDistributor.new(relative_path, unprotected, true,
                                                  { :protected    => true, :id => pulp_id,
                                                    :auto_publish => true })
@@ -106,7 +106,7 @@ module Content::Orchestration::Pulp
   end
 
   def runcible_config
-    pulp_url = URI(Setting['pulp_url'])
+    pulp_url = URI(Setting.pulp_url)
     {
       :url          => "#{pulp_url.scheme}://#{pulp_url.host}:#{pulp_url.port}",
       :api_path     => pulp_url.path,

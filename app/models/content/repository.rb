@@ -8,8 +8,11 @@ module Content
     include Content::Orchestration::Pulp
 
     YUM_TYPE  = 'yum'
-    FILE_TYPE = 'file'
-    TYPES     = [YUM_TYPE, FILE_TYPE]
+    KICKSTART_TYPE = 'kickstart'
+    FILE_TYPE = 'iso'
+    TYPES     = [YUM_TYPE, KICKSTART_TYPE, FILE_TYPE]
+
+    REPO_PREFIX = '/pulp/repos/'
 
     belongs_to :product
     belongs_to :gpg_key
@@ -19,8 +22,7 @@ module Content
 
     validates :product, :presence => true
     validates :name, :presence => true
-    # TODO: add relative_path validation (valid url format)
-
+    validates_uniqueness_of :name, :scope => :product_id
     validates_inclusion_of :content_type,
       :in          => TYPES,
       :allow_blank => false,
@@ -30,6 +32,13 @@ module Content
     scoped_search :in => :architectures, :on => :name, :rename => :architecture, :complete_value => :true
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
 
+    # architecture_id is nil for noarch repositories.
+    scope :for_host, lambda {|host| includes({:product=>:environments}).
+        where(:architecture_id=>[nil,host.architecture_id], :content_environment_products=>{:environment_id=>host.environment_id})}
+
+    scope :kickstart, where(:content_type=>KICKSTART_TYPE)
+    scope :yum, where(:content_type=>YUM_TYPE)
+
     def orchestration_errors?
       errors.empty?
     end
@@ -38,5 +47,16 @@ module Content
       nil
     end
 
+    def full_path
+      pulp_url = URI.parse(Setting.pulp_url)
+      scheme = (unprotected ? 'http' : 'https')
+      port = (pulp_url.port == 443 || pulp_url.port == 80 ? "" : ":#{pulp_url.port}" )
+      "#{scheme}://#{pulp_url.host}#{port}#{REPO_PREFIX}#{relative_path}"
+    end
+
+    # The label is used as a repository label in a yum repo file.
+    def to_label
+      "#{product.name}-#{name}".parameterize
+    end
   end
 end
