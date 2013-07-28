@@ -4,7 +4,8 @@ module Content
     before_filter :find_by_name, :only => %w{show edit update destroy sync}
 
     def index
-      @repositories = Repository.search_for(params[:search], :order => params[:order]).paginate(:page => params[:page])
+      @repositories = Repository.search_for(params[:search], :order => params[:order]).
+        paginate(:page => params[:page]).includes(:product, :operatingsystems)
     end
 
     def new
