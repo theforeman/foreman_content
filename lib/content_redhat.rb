@@ -19,7 +19,6 @@ module ContentRedhat
       self.repositories.for_host(host).yum.map { |repo| repo_to_hash(repo) }
     end
 
-    #
     def repo_to_hash repo
       {
         :baseurl     => repo.full_path,
