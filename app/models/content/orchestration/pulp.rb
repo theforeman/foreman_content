@@ -17,10 +17,22 @@ module Content::Orchestration::Pulp
     Runcible::Resources::Repository.sync(pulp_id)
   end
 
+  def retrieve_with_details
+    return unless pulp? && pulp_id
+    initialize_pulp
+    Runcible::Resources::Repository.retrieve(pulp_id, {:details => true})
+  end
+
   def sync_status
-    initialize_pulp if pulp?
-    status = Runcible::Extensions::Repository.sync_status(pulp_id) if pulp? && pulp_id
-    status.first ? status.first[:state] : ''
+    return unless pulp? && pulp_id
+    initialize_pulp
+    Runcible::Extensions::Repository.sync_status(pulp_id)
+  end
+
+  def sync_history
+    return unless pulp? && pulp_id
+    initialize_pulp
+    Runcible::Extensions::Repository.sync_history(pulp_id)
   end
 
   protected

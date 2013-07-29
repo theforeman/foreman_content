@@ -4,7 +4,8 @@ module Content
     before_filter :find_by_name, :only => %w{show edit update destroy}
 
     def index
-      @providers = Provider.search_for(params[:search], :order => params[:order]).paginate(:page => params[:page])
+      @providers = Provider.search_for(params[:search], :order => params[:order]).
+          paginate(:page => params[:page]).includes(:repositories)
     end
 
     def new
