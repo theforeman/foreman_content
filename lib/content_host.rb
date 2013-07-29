@@ -5,6 +5,7 @@ module ContentHost
     base.class_eval do
       has_many :host_products, :dependent => :destroy, :uniq=>true,:foreign_key => :host_id, :class_name => 'Content::HostProduct'
       has_many :products, :through => :host_products, :class_name => 'Content::Product'
+      has_many :repositories, :through => :products, :class_name => 'Content::Repository'
 
       scoped_search :in=>:products, :on=>:name, :complete_value => true, :rename => :product
 
@@ -28,6 +29,16 @@ module ContentHost
       end]
       # adds a global parameter called repositories contain all repos
       params_without_repositories.merge('repositories' => repos)
+    end
+
+    def my_repos
+      # os default repos
+      repos = self.operatingsystem.default_repositories.for_host(self).yum.all
+      # hostgroup repos
+      repos += self.hostgroup.repositories.for_host(self).yum.all
+      # host repos
+      repos + self.repositories.for_host(self).yum.all
+      repos.uniq
     end
 
   end

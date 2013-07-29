@@ -16,7 +16,7 @@ module ContentRedhat
     end
 
     def repos host
-      self.repositories.for_host(host).yum.map { |repo| repo_to_hash(repo) }
+      host.my_repos.map { |repo| repo_to_hash(repo) }
     end
 
     def repo_to_hash repo
