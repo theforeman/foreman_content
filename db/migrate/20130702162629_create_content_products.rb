@@ -4,7 +4,6 @@ class CreateContentProducts < ActiveRecord::Migration
       t.string     :name
       t.text       :description
       t.references :provider, :null => false
-      t.string     :cp_id, :null => false
       t.references :gpg_key
       t.timestamps
     end
