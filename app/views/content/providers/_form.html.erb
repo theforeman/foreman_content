@@ -16,10 +16,11 @@
     <div class="tab-pane active" id="primary">
       <%= text_f f, :name %>
       <%= text_f f, :description %>
-      <%= selectable_f f, :kind, Content::Provider::TYPES , {},
+      <%= f.hidden_field :kind, :value => Content::Provider::CUSTOM_TYPE %>
+      <%# selectable_f f, :kind, Content::Provider::TYPES , {},
                        {:label => _("Type"), :disabled=> !@provider.new_record? ,:onchange => 'providerTypeSelected(this);'} %>
 
-      <%= text_f f,:repository_url %>
+      <%# text_f f,:repository_url %>
     </div>
     <% if show_location_tab? %>
       <div class="tab-pane" id="locations">
