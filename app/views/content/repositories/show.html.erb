@@ -1,0 +1,98 @@
+<% javascript 'charts' %>
+<% title @repository.to_label %>
+
+<%= title_actions(button_group(
+                      link_to_if_authorized(_("Edit"), hash_for_edit_repository_path(@repository)),
+                      link_to_if_authorized(_("Synchronize"), hash_for_sync_repository_path(@repository), :method => :put)
+                  )) %>
+<div class="row">
+  <div class="span12">
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th><%= _('Repository details') %></th>
+        <th></th>
+      </tr>
+      <tr>
+        <td> <%= _("Name") %> </td>
+        <td> <%= @repository.to_label %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Description") %> </td>
+        <td> <%= @repository.description %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Feed") %> </td>
+        <td> <%= @repository.feed %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Content type") %> </td>
+        <td> <%= @repository.content_type %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Architecture") %> </td>
+        <td> <%= @repository.architecture %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Enabled") %> </td>
+        <td> <%= @repository.enabled %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Unprotected") %> </td>
+        <td> <%= @repository.unprotected %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Full path") %> </td>
+        <td> <%= @repository.full_path %> </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="stats-well span4">
+    <h4 class="ca" ><%= _('Last Update Metrics') -%></h4>
+    <div style="margin-top:50px;padding-bottom: 40px;">
+      <%= flot_pie_chart("metrics" ,_("Last Update Metrics"), sync_history_times(@sync_history), :class => "statistics-pie small")%>
+    </div>
+  </div>
+  <div class="stats-well span4">
+    <h4 class="ca" ><%= _('Update Summary') -%></h4>
+    <%= flot_bar_chart("status" ,"", _("Number of packages"), sync_history_metrics(@sync_history), :class => "statistics-bar")%>
+  </div>
+
+  <div class="span4">
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th><%= _('Repository Counters') %></th>
+        <th></th>
+      </tr>
+      <% @details[:content_unit_counts].each do |name, value| -%>
+        <tr>
+          <td> <%= name.humanize %> </td>
+          <td> <%= value %> </td>
+        </tr>
+      <% end -%>
+      <tr>
+        <td> <%= _("Last published") %> </td>
+        <td> <%= last_publish @details %> </td>
+      </tr>
+      <tr>
+        <td> <%= _("Last synchronized") %> </td>
+        <td> <%= last_sync @details %> </td>
+      </tr>
+    </table>
+  </div>
+  <div class="span4">
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th><%= _('Last Sync') %></th>
+        <th></th>
+      </tr>
+      <% sync_history_status(@sync_history).each do |name, value| -%>
+        <tr>
+          <td> <%= name.humanize %> </td>
+          <td> <%= value %> </td>
+        </tr>
+      <% end -%>
+    </table>
+  </div>
+</div>

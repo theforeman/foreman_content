@@ -6,19 +6,20 @@
     <th><%= sort :name, :as => s_("Name") %></th>
     <th><%= _("Product") %></th>
     <th><%= _("Operating system") %></th>
-    <th><%= _("Sync status") %></th>
+    <th><%= _("Last sync status") %></th>
     <th><%= _("Content type") %></th>
     <th></th>
   </tr>
   <% @repositories.each do |repository| %>
     <tr>
-      <td><%= link_to_if_authorized(h(repository.name), hash_for_edit_repository_path(repository)) %></td>
+      <td><%= link_to_if_authorized(h(repository.name), hash_for_repository_path(repository)) %></td>
       <td><%= repository.product %></td>
       <td><%= repository.operatingsystems.map(&:to_label).to_sentence %></td>
-      <td><%= repository.sync_status %></td>
+      <td><%= sync_status repository  %></td>
       <td><%= repository.content_type %></td>
       <td align="right">
         <%= action_buttons(
+            display_link_if_authorized(_("Edit"), hash_for_edit_repository_path(repository)),
             display_link_if_authorized(_("Synchronize"), hash_for_sync_repository_path(repository), :method => :put),
             display_delete_if_authorized(hash_for_repository_path(repository), :confirm => "Delete #{repository.name}?")
           )%>

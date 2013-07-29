@@ -17,6 +17,11 @@ module Content
     validates :name, :presence => true
     validates_with Validators::NameFormat, :attributes => :name
     scoped_search :on => :name
+    scoped_search :in => :repositories, :on => :name, :rename => :repository, :complete_value => :true
+    scoped_search :in => :provider, :on => :name, :rename => :provider, :complete_value => :true
 
+    def sync
+      self.repositories.map{ |repo| repo.sync }
+    end
   end
 end

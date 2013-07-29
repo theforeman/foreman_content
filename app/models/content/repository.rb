@@ -29,8 +29,9 @@ module Content
                            :message     => (_("Please select content type from one of the following: %s") % TYPES.join(', '))
 
     scoped_search :on => [:name, :enabled], :complete_value => :true
-    scoped_search :in => :architectures, :on => :name, :rename => :architecture, :complete_value => :true
+    scoped_search :in => :architecture, :on => :name, :rename => :architecture, :complete_value => :true
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
+    scoped_search :in => :product, :on => :name, :rename => :product, :complete_value => :true
 
     # architecture_id is nil for noarch repositories.
     scope :for_host, lambda { |host| includes({ :product => :environments }).
