@@ -5,7 +5,7 @@ module Content
 
     def index
       @providers = Provider.search_for(params[:search], :order => params[:order]).
-          paginate(:page => params[:page]).includes(:repositories)
+          paginate(:page => params[:page])
     end
 
     def new
