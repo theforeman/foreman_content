@@ -9,9 +9,7 @@ class CreateContentRepositories < ActiveRecord::Migration
       t.string      :feed
       t.boolean     :unprotected, :default => false
       t.references  :product, :null => false
-      t.string      :pulp_id # generated automatically
-      t.string      :cp_label # generated automatically
-      t.string      :content_id #generated automatically
+      t.string      :pulp_id
       t.references  :gpg_key
       t.references  :architecture
       t.timestamps
