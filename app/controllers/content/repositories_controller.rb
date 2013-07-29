@@ -32,6 +32,13 @@ module Content
       end
     end
 
+    def show
+      @details = @repository.retrieve_with_details
+      @sync_history = @repository.sync_history
+    rescue
+      redirect_back_or_to(edit_repository_path)
+    end
+
     def destroy
       if @repository.destroy
         process_success
@@ -42,9 +49,9 @@ module Content
 
     def sync
       @repository.sync
-      process_success(:success_msg => _("Successfully started sync for %s") % @repository.name)
+      process_success(:success_msg => _("Successfully started sync for %s") % @repository.to_label)
     rescue => e
-      process_error(:error_msg => _("Failed to start sync for %s") % @repository.name)
+      process_error(:error_msg => _("Failed to start sync for %s") % @repository.to_label)
     end
   end
 end

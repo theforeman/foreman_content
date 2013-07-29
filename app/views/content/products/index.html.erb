@@ -6,14 +6,19 @@
   <tr>
     <th><%= sort :name, :as => s_("Name") %></th>
     <th><%= _("Description") %></th>
+    <th><%= _("Repositories") %></th>
     <th></th>
   </tr>
   <% @products.each do |product| %>
     <tr>
       <td><%= link_to_if_authorized(h(product.name), hash_for_edit_product_path(:id => product.name)) %></td>
       <td><%= product.description %></td>
+      <td><%= link_to product.repositories.count, repositories_path(:search => "product=#{product.name}") %></td>
       <td align="right">
-        <%= display_delete_if_authorized hash_for_product_path(:id => product.name), :confirm => "Delete #{product.name}?" %>
+        <%= action_buttons(
+                display_link_if_authorized(_("Synchronize"), hash_for_sync_product_path(product), :method => :put),
+                display_delete_if_authorized(hash_for_product_path(product), :confirm => "Delete #{product.name}?")
+            )%>
       </td>
     </tr>
   <% end %>

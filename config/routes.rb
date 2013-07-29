@@ -16,6 +16,9 @@ Rails.application.routes.draw do
       collection do
         get 'auto_complete_search'
       end
+      member do
+        put :sync
+      end
     end
 
     resources :repositories do
