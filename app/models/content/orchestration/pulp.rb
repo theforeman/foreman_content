@@ -1,49 +1,16 @@
-require 'runcible'
-
 module Content::Orchestration::Pulp
   extend ActiveSupport::Concern
 
   included do
-    attr_reader :pulp
-    after_validation :initialize_pulp, :queue_pulp
-    before_destroy :initialize_pulp, :queue_pulp_destroy unless Rails.env == "test"
+    after_validation :queue_pulp
+    before_destroy :queue_pulp_destroy unless Rails.env == "test"
   end
 
-  def pulp?
-    @use_pulp ||= Setting.use_pulp and enabled?
-  end
-
-  def sync
-    Runcible::Resources::Repository.sync(pulp_id)
-  end
-
-  def retrieve_with_details
-    return unless pulp? && pulp_id
-    initialize_pulp
-    Runcible::Resources::Repository.retrieve(pulp_id, {:details => true})
-  end
-
-  def sync_status
-    return unless pulp? && pulp_id
-    initialize_pulp
-    Runcible::Extensions::Repository.sync_status(pulp_id)
-  end
-
-  def sync_history
-    return unless pulp? && pulp_id
-    initialize_pulp
-    Runcible::Extensions::Repository.sync_history(pulp_id)
+  def orchestration_errors?
+    errors.empty?
   end
 
   protected
-
-  def initialize_pulp
-    return unless pulp?
-    self.pulp_id       ||= Foreman.uuid.gsub("-", '')
-    self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name)
-
-    Runcible::Base.config = runcible_config
-  end
 
   def queue_pulp
     return unless pulp? and errors.empty?
@@ -74,7 +41,7 @@ module Content::Orchestration::Pulp
   end
 
   def del_pulp_repo
-    Runcible::Resources::Repository.delete(pulp_id)
+    delete
   end
 
   def set_sync_pulp_repo
@@ -115,22 +82,6 @@ module Content::Orchestration::Pulp
       else
         raise "Unexpected repo type %s" % content_type
     end
-  end
-
-  def runcible_config
-    pulp_url = URI(Setting.pulp_url)
-    {
-      :url          => "#{pulp_url.scheme}://#{pulp_url.host}:#{pulp_url.port}",
-      :api_path     => pulp_url.path,
-      :user         => "admin",
-      :timeout      => 60,
-      :open_timeout => 60,
-      :oauth        => { :oauth_secret => Setting['pulp_oauth_secret'],
-                         :oauth_key    => Setting['pulp_oauth_key'] },
-      :logging      => { :logger    => logger,
-                         :exception => true,
-                         :debug     => true }
-    }
   end
 
   def queue_pulp_destroy

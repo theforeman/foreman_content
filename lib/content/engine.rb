@@ -5,6 +5,7 @@ require 'content_operatingsystem'
 require 'content_redhat'
 require 'content_hostgroup'
 require 'content_host'
+require 'pulp_configuration'
 
 
 module Content
@@ -25,6 +26,7 @@ module Content
 
     # Include extensions to models in this config.to_prepare block
     config.to_prepare do
+      ::PulpConfiguration.initialize_runcible
       # Patch the menu
       ::HomeHelper.send :include, ContentHomeHelperPatch
       # Extend the taxonomy model
