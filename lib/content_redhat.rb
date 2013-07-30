@@ -15,11 +15,15 @@ module ContentRedhat
       end
     end
 
+    # return an array of repositories for kickstart script as additional repos
+    # to the kickstart main repo, this list will typically include updates and epel
     def repos host
-      host.attached_repositories.yum.map{ |repo| repo_to_hash(repo) }
+      host.attached_repositories.yum.map{ |repo| format_repo(repo) }
     end
 
-    def repo_to_hash repo
+    private
+    # convert a repository to a format that kickstart script can consume
+    def format_repo repo
       {
         :baseurl     => repo.full_path,
         :name        => repo.to_label,
