@@ -22,16 +22,6 @@ module ContentHost
       params_without_repositories.merge('repositories' => repos)
     end
 
-    def format_repo repo
-      {
-        'baseurl' => repo.full_path,
-        # yum repos have descr field but no name, if descr is empty use the repo name
-        'descr' => repo.description.blank? ? repo.name : repo.description,
-        'enabled' => repo.enabled ? '1': '0',
-        'gpgcheck' => !!repo.gpg_key ? '1': '0'
-      }
-    end
-
     # product_ids from the os default and hostgroup.
     def inherited_product_ids
       products  = operatingsystem.product_ids
@@ -46,6 +36,19 @@ module ContentHost
     def attached_repositories
       Content::Repository.attached_to_host(self)
     end
+
+    private
+
+    # convert a repository to a format that puppet create_resource with yumrepo can consume
+    def format_repo repo
+       {
+         'baseurl' => repo.full_path,
+         # yum repos have descr field but no name, if descr is empty use the repo name
+         'descr' => repo.description.blank? ? repo.name : repo.description,
+         'enabled' => repo.enabled ? '1': '0',
+         'gpgcheck' => !!repo.gpg_key ? '1': '0'
+       }
+     end
 
   end
 end
