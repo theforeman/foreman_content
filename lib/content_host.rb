@@ -24,7 +24,8 @@ module ContentHost
 
     # product_ids from the os default and hostgroup.
     def inherited_product_ids
-      products  = operatingsystem.product_ids
+      products = []
+      products += operatingsystem.product_ids if operatingsystem
       products += Content::HostgroupProduct.where(:hostgroup_id => hostgroup.path_ids).pluck(:product_id) if hostgroup_id
       products.uniq
     end
