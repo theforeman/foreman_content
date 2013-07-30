@@ -33,9 +33,19 @@ module Content
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
     scoped_search :in => :product, :on => :name, :rename => :product, :complete_value => :true
 
+    # Repositories filtered by operating system architecture and environment.
     # architecture_id is nil for noarch repositories.
-    scope :for_host, lambda { |host| includes({ :product => :environments }).
-      where(:architecture_id => [nil, host.architecture_id], :content_environment_products => { :environment_id => host.environment_id }) }
+    scope :available_for_host, lambda { |host|
+      joins(:operatingsystems => :operatingsystem_repositories , :product => :environments).
+      where(:architecture_id => [nil, host.architecture_id],
+            :content_operatingsystem_repositories => { :operatingsystem_id => host.operatingsystem_id},
+            :content_environment_products => { :environment_id => host.environment_id }).
+      uniq}
+
+    #
+    scope :attached_to_host, lambda { |host|
+      where(:product_id => host.all_product_ids).available_for_host(host)
+    }
 
     scope :kickstart, where(:content_type => KICKSTART_TYPE)
     scope :yum, where(:content_type => YUM_TYPE)

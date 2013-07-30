@@ -7,6 +7,9 @@ module Content
     has_many :environment_products, :dependent => :destroy, :uniq=>true
     has_many :environments, :through => :environment_products
 
+    has_many :product_operatingsystems, :dependent => :destroy, :uniq=>true
+    has_many :operatingsystems, :through => :product_operatingsystems
+
     has_many :hostgroup_products, :dependent => :destroy, :uniq=>true
     has_many :hostgroups, :through => :hostgroup_products
 
