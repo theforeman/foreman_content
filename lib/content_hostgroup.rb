@@ -11,5 +11,8 @@ module ContentHostgroup
   end
 
   module InstanceMethods
+    def inherited_product_ids
+      Content::HostgroupProduct.where(:hostgroup_id => hostgroup.ancestor_ids).pluck(:product_id)
+    end
   end
 end

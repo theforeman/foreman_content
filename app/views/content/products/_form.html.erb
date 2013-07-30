@@ -1,10 +1,27 @@
 <%= javascript 'content/content.js' %>
 <%= form_for @product, :url => (@product.new_record? ? products_path : product_path(@product)) do |f| %>
   <%= base_errors_for @product %>
-  <%= text_f f, :name %>
-  <%= text_f f, :description %>
-  <%= multiple_selects(f, :environments, Environment, f.object.environment_ids) %>
-  <%= select_f f, :provider_id, Content::Provider.all, :id, :name,{}, {:label => _("Provider")} %>
-
+  <ul class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#primary" data-toggle="tab"><%= _("Product") %></a></li>
+    <li><a href="#environments" data-toggle="tab"><%= _("Environments") %></a></li>
+    <li><a href="#operatingsystems" data-toggle="tab"><%= _("Operating systems") %></a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="primary">
+      <%= select_f f, :provider_id, Content::Provider.all, :id, :name,{}, {:label => _("Provider")} %>
+      <%= text_f f, :name %>
+      <%= text_f f, :description %>
+    </div>
+    <div class="tab-pane" id="environments">
+      <%= alert :class => 'controls alert-success', :header => 'Product environments list',
+                         :text  => _('Repositories of this product will be restricted only for hosts in the selected environments.') %>
+      <%= multiple_selects(f, :environments, Environment, f.object.environment_ids) %>
+    </div>
+    <div class="tab-pane" id="operatingsystems">
+      <%= alert :class => 'controls alert-success', :header => 'Default Products for operating system',
+                        :text  => _('Repositories of this product will be added to every host that runs the selected operating system, pending environment restriction') %>
+      <%= multiple_selects(f, :operatingsystems, Redhat, f.object.operatingsystem_ids,{:label=>"Operating system default products"}) %>
+    </div>
+  </div>
   <%= submit_or_cancel f %>
 <% end %>

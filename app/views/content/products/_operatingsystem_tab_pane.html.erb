@@ -1,0 +1,5 @@
+<div class="tab-pane" id="products">
+  <%= fields_for @operatingsystem do |f| %>
+    <%= multiple_selects f, :products, Content::Product, @operatingsystem.product_ids , {}, {} %>
+  <% end  -%>
+</div>
