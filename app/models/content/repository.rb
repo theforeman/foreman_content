@@ -4,6 +4,7 @@ require 'content/orchestration/pulp'
 module Content
   class Repository < ActiveRecord::Base
     include CustomRepositoryPaths
+    include Content::Remote::Pulp::Repository
     include ::Orchestration
     include Content::Orchestration::Pulp
 
@@ -49,10 +50,6 @@ module Content
 
     scope :kickstart, where(:content_type => KICKSTART_TYPE)
     scope :yum, where(:content_type => YUM_TYPE)
-
-    def orchestration_errors?
-      errors.empty?
-    end
 
     def update_cache
       nil
