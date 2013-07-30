@@ -5,7 +5,6 @@ module ContentHost
     base.class_eval do
       has_many :host_products, :dependent => :destroy, :uniq=>true,:foreign_key => :host_id, :class_name => 'Content::HostProduct'
       has_many :products, :through => :host_products, :class_name => 'Content::Product'
-      has_many :repositories, :through => :products, :class_name => 'Content::Repository'
 
       scoped_search :in=>:products, :on=>:name, :complete_value => true, :rename => :product
 
@@ -18,17 +17,19 @@ module ContentHost
     # adds repository hash to ENC global parameters
     def params_with_repositories
       # convert all repos to a format that puppet create_resource with yumrepo can consume
-      repos = Hash[self.os.repos(self).map do |repo|
-        repo.stringify_keys!
-        # yum repos have descr field but no name, if descr is empty use the repo name
-        descr = repo.delete('description')
-        repo['descr']    = descr.present? ? descr : repo['name']
-        repo['enabled']  = repo['enabled'] ? '1': '0'
-        repo['gpgcheck'] = repo['gpgcheck'] ? '1': '0'
-        [repo.delete('name'), repo]
-      end]
+      repos = Hash[attached_repositories.map{ |repo| [repo.name, format_repo(repo)] }]
       # adds a global parameter called repositories contain all repos
       params_without_repositories.merge('repositories' => repos)
+    end
+
+    def format_repo repo
+      {
+        'baseurl' => repo.full_path,
+        # yum repos have descr field but no name, if descr is empty use the repo name
+        'descr' => repo.description.blank? ? repo.name : repo.description,
+        'enabled' => repo.enabled ? '1': '0',
+        'gpgcheck' => !!repo.gpg_key ? '1': '0'
+      }
     end
 
     # product_ids from the os default and hostgroup.
@@ -40,6 +41,10 @@ module ContentHost
 
     def all_product_ids
       (inherited_product_ids + product_ids).uniq
+    end
+
+    def attached_repositories
+      Content::Repository.attached_to_host(self)
     end
 
   end
