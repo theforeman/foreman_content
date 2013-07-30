@@ -31,14 +31,15 @@ module ContentHost
       params_without_repositories.merge('repositories' => repos)
     end
 
-    def my_repos
-      # os default repos
-      repos = self.operatingsystem.default_repositories.for_host(self).yum.all
-      # hostgroup repos
-      repos += self.hostgroup.repositories.for_host(self).yum.all
-      # host repos
-      repos + self.repositories.for_host(self).yum.all
-      repos.uniq
+    # product_ids from the os default and hostgroup.
+    def inherited_product_ids
+      products  = operatingsystem.product_ids
+      products += Content::HostgroupProduct.where(:hostgroup_id => hostgroup.path_ids).pluck(:product_id) if hostgroup_id
+      products.uniq
+    end
+
+    def all_product_ids
+      (inherited_product_ids + product_ids).uniq
     end
 
   end

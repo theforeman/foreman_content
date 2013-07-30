@@ -8,7 +8,7 @@ module ContentRedhat
 
   module InstanceMethods
     def medium_uri_with_content_uri host, url = nil
-      if url.nil? && (full_path = self.repositories.for_host(host).kickstart.first.try(:full_path))
+      if url.nil? && (full_path = self.repositories.available_for_host(host).kickstart.first.try(:full_path))
         URI.parse(full_path)
       else
         medium_uri_without_content_uri(host, url)
@@ -16,7 +16,7 @@ module ContentRedhat
     end
 
     def repos host
-      host.my_repos.map { |repo| repo_to_hash(repo) }
+      Content::Repository.attached_to_host(host).map{ |repo| repo_to_hash(repo) }
     end
 
     def repo_to_hash repo

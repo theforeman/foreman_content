@@ -1,5 +1,5 @@
 <div class="tab-pane" id="products">
   <%= fields_for @host do |f| %>
-    <%= multiple_selects f, :products, Content::Product, @host.product_ids , {}, {} %>
+    <%= multiple_selects f, :products, Content::Product, @host.product_ids , {:disabled => @host.inherited_product_ids}, {} %>
   <% end  -%>
 </div>
