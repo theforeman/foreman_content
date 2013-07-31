@@ -73,13 +73,13 @@ of an Installation media.
 * Product - the product from above.
 * GPG key - not implemented
 
-Once created, the repo would automaticiily be synced and published.
+Once created, the repo would automatically be synced and published.
 
 ## Consuming Repos within your Kickstart
 
-Once a kickstart repo has been assigned to an OS, it would automaticiily prefer
-that repo as an install media, so if thats all you want to do, its done
-automaticiily.
+Once a kickstart repo has been assigned to an OS, it would automatically prefer
+that repo as an install media, so if that is all you want to do, its done
+automatically.
 
 if you wish to add more yum type repos during KS, you may add the following
 snippet to your provisioning template.
@@ -114,4 +114,5 @@ pulp-admin event listener http create --event-type '*' --url https://foreman.exa
 
 # TODO
 
-* Write the full todo list
+* https://trello.com/b/NtzVcPkD/foreman-backlog
+filter engine spike
