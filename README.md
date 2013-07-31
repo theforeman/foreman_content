@@ -6,6 +6,8 @@ right now and currently handles only yum/rpm repositories ;)
 # Dependencies
 
 * Foreman running development or 1.2.1 (maybe 1.2 but was not tested)
+* You must have a fully working pulp server, see http://www.pulpproject.org/docs/
+
 
 # Installation
 
@@ -26,8 +28,7 @@ touch tmp/restart.txt (if using passeger)
 # Configuration
 
 ## Pulp
-
-You must have a fully working pulp server, see http://www.pulpproject.org/docs/
+* enable oauth authentication
 
 ## UI config
 
@@ -46,15 +47,12 @@ oauth creds, for example:
 
 You would see in the UI under More, a new sub menu called content, in it:
 
-* Provider - The content Provider, for example, CentOS, if its a non RHEL
-* operation system, use a custom type.
-* Product  - The actual product the provider delivers, for example CentOS 6
+* Provider   - The content Provider, for example, CentOS, EPEL etc
+* Product    - The actual product the provider delivers, for example CentOS 6
 * Repository - list of repositories that belong to the above product, for
 example, CentOS 6.4 + CentOS updates.
-* GPG Keys - not implemented really at the moment.
 
-Start by creating a Provider and a Product, these are foreman constructs which
-would be used later on.
+Start by creating a Provider and a Product, these are foreman constructs which would be used later on.
 
 ## Syncing Repositories
 
