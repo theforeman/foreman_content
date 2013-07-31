@@ -1,7 +1,7 @@
 module Content
   module Pulp
     class RepositorySyncStatus
-      attr_reader :state, :progress, :finish_time, :start_time
+      attr_reader :state, :progress, :finish_time, :start_time, :sync_times, :sync_metrics, :message
 
       HISTORY_ERROR = "failed"
       HISTORY_SUCCESS = "success"
@@ -13,8 +13,12 @@ module Content
       NOT_SYNCED = "not synchronized"
 
       def initialize(attrs)
+        @state = NOT_SYNCED
+        @progress = @finish_time = @start_time = @message = ''
+        @sync_times = @sync_metrics = {}
+
         attrs.each do |k, v|
-          instance_variable_set("@#{k}", v) if respond_to?("#{k}=".to_sym)
+          instance_variable_set("@#{k}", v) if respond_to?("#{k}".to_sym)
         end
       end
 
@@ -29,15 +33,7 @@ module Content
       protected
 
       def self._get_most_recent_sync_status(pulp_id)
-        begin
-          history = Runcible::Extensions::Repository.sync_status(pulp_id)
-
-          if history.nil? or history.empty?
-            history = convert_history(Runcible::Extensions::Repository.sync_history(pulp_id))
-          end
-        rescue => e
-            history = convert_history(Runcible::Extensions::Repository.sync_history(pulp_id))
-        end
+        history = convert_history(Runcible::Extensions::Repository.sync_history(pulp_id))
 
         if history.nil? or history.empty?
           return RepositorySyncStatus.new(:state => NOT_SYNCED)
@@ -45,6 +41,8 @@ module Content
           history = sort_sync_status(history)
           return RepositorySyncStatus.new(history.first.with_indifferent_access)
         end
+#      rescue => e
+#        RepositorySyncStatus.new({:state => "not available"})
       end
 
       def self.sort_sync_status statuses
@@ -76,7 +74,7 @@ module Content
         return statuses
       end
 
-      def convert_history(history_list)
+      def self.convert_history(history_list)
         #history item attributes
         #["_id", "_ns", "added_count", "completed", "details", "error_message", "exception", "id",
         # "importer_id", "importer_type_id", "removed_count", "repo_id", "result", "started", "summary",
@@ -90,15 +88,38 @@ module Content
           result = history['result']
           result = ERROR if result == HISTORY_ERROR
           result = FINISHED if result == HISTORY_SUCCESS
+
           {
               :state =>  result,
-              :progress => {:details=> history["details"]},
+              :progress => {:details=> history['details']},
               :finish_time => history['completed'],
-              :start_time => history['started']
+              :start_time => history['started'],
+              :sync_times => parse_sync_times(history),
+              :sync_metrics => parse_sync_metrics(history),
+              :message => history['error_message'] || history['summary']['error']
           }.with_indifferent_access
         end
       end
 
+      def self.parse_sync_times(history)
+        if (summary = history.try(:fetch, 'summary')).try(:fetch, 'comps').nil?
+          {}
+        else
+          {
+            :comps => summary['comps']['time_total_sec'],
+            :errata => summary['errata']['errata_time_total_sec'],
+            :packages   => summary['packages']['time_total_sec']
+          }
+        end
+      end
+
+      def self.parse_sync_metrics(history)
+        {
+          :updated => history['updated_count'],
+          :removed => history['removed_count'],
+          :added   => history['added_count']
+        }
+      end
     end
   end
 end

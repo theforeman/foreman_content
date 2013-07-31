@@ -21,11 +21,6 @@ module Content
         Runcible::Resources::Repository.retrieve(pulp_id, {:details => true})
       end
 
-      def sync_status
-        return unless pulp? && pulp_id
-        Runcible::Extensions::Repository.sync_status(pulp_id)
-      end
-
       def sync_history
         return unless pulp? && pulp_id
         Runcible::Extensions::Repository.sync_history(pulp_id)
