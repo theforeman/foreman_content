@@ -22,6 +22,10 @@ module Content
         end
       end
 
+      def self.not_synced
+        RepositorySyncStatus.new(:state => NOT_SYNCED)
+      end
+
       def self.for_repository(pulp_id)
         self._get_most_recent_sync_status(pulp_id)
       end
@@ -36,13 +40,13 @@ module Content
         history = convert_history(Runcible::Extensions::Repository.sync_history(pulp_id))
 
         if history.nil? or history.empty?
-          return RepositorySyncStatus.new(:state => NOT_SYNCED)
+          return RepositorySyncStatus.not_synced
         else
           history = sort_sync_status(history)
           return RepositorySyncStatus.new(history.first.with_indifferent_access)
         end
-#      rescue => e
-#        RepositorySyncStatus.new({:state => "not available"})
+      rescue => e
+        RepositorySyncStatus.new({:state => "not available"})
       end
 
       def self.sort_sync_status statuses
@@ -85,18 +89,22 @@ module Content
         # "start_time", "tags", "state", "finish_time", "dependency_failures", "schedule_id", "progress",
         # "call_request_group_id", "call_request_id", "principal_login", "response", "result"]
         history_list.collect do |history|
-          result = history['result']
-          result = ERROR if result == HISTORY_ERROR
-          result = FINISHED if result == HISTORY_SUCCESS
-
+          result = case history['result']
+            when HISTORY_ERROR
+              ERROR
+            when HISTORY_SUCCESS
+              FINISHED
+            else
+              history['result']
+          end
           {
-              :state =>  result,
-              :progress => {:details=> history['details']},
-              :finish_time => history['completed'],
-              :start_time => history['started'],
-              :sync_times => parse_sync_times(history),
-              :sync_metrics => parse_sync_metrics(history),
-              :message => history['error_message'] || history['summary']['error']
+            :state =>  result,
+            :progress => {:details=> history['details']},
+            :finish_time => history['completed'],
+            :start_time => history['started'],
+            :sync_times => parse_sync_times(history),
+            :sync_metrics => parse_sync_metrics(history),
+            :message => history['error_message'] || history['summary']['error']
           }.with_indifferent_access
         end
       end
