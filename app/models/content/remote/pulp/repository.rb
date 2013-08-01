@@ -38,7 +38,7 @@ module Content
         protected
         def initialize_pulp
           self.pulp_id       ||= Foreman.uuid.gsub("-", '')
-          self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name)
+          self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) if name
         end
       end
     end

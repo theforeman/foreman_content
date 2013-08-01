@@ -9,7 +9,7 @@ module Content
     end
 
     def new
-      @repository = Repository.new
+      @repository = Repository.new(:unprotected => true)
     end
 
     def create
