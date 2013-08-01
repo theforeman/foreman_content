@@ -2,7 +2,6 @@ module Content
   class Product < ActiveRecord::Base
     include ::Taxonomix
 
-    belongs_to :provider
     has_many :repositories
     has_many :environment_products, :dependent => :destroy, :uniq=>true
     has_many :environments, :through => :environment_products
@@ -21,7 +20,6 @@ module Content
     validates_with Validators::NameFormat, :attributes => :name
     scoped_search :on => :name
     scoped_search :in => :repositories, :on => :name, :rename => :repository, :complete_value => :true
-    scoped_search :in => :provider, :on => :name, :rename => :provider, :complete_value => :true
 
     def sync
       self.repositories.map{ |repo| repo.sync }
