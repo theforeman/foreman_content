@@ -10,12 +10,3 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-$(function() {
-  providerTypeSelected($("select[id$='provider_kind']"));
-});
-
-function providerTypeSelected(item)
-{
-  var provider = $(item).val();
-  $("[id$='provider_repository_url']").parents(".control-group").toggle(provider == "Redhat")
-}
