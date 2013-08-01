@@ -4,8 +4,8 @@ require "content/version"
 Gem::Specification.new do |s|
   s.name        = "foreman_content"
   s.version     = Content::VERSION
-  s.authors     = [""]
-  s.email       = [""]
+  s.authors     = ['Dmitri Dolguikh','Amos Benari','Ohad Levy']
+  s.email       = ['witlessbird@gmail.com', 'abenari@redhat.com', 'ohadlevy@gmail.com']
   s.homepage    = "https://github.com/theforeman/foreman_content"
   s.summary     = "Add Foreman support for content management."
   s.description = "Add Foreman support for software repositories and puppet environments management."

@@ -15,7 +15,7 @@ Require the gem in Foreman by creating `bundler.d/Gemfile.local.rb` with the
 following:
 
 ```
-gem 'foreman_content', :git => 'https://github.com/theforeman/foreman_content.git'
+gem 'foreman_content'
 ```
 
 Update & Restart Foreman:
