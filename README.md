@@ -47,12 +47,9 @@ oauth creds, for example:
 
 You would see in the UI under More, a new sub menu called content, in it:
 
-* Provider   - The content Provider, for example, CentOS, EPEL etc
-* Product    - The actual product the provider delivers, for example CentOS 6
+* Product    - The actual product you are managing, for example CentOS 6
 * Repository - list of repositories that belong to the above product, for
 example, CentOS 6.4 + CentOS updates.
-
-Start by creating a Provider and a Product, these are foreman constructs which would be used later on.
 
 ## Syncing Repositories
 

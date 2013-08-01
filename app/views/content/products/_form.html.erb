@@ -8,7 +8,6 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
-      <%= select_f f, :provider_id, Content::Provider.all, :id, :name,{}, {:label => _("Provider")} %>
       <%= text_f f, :name %>
       <%= text_f f, :description %>
     </div>
