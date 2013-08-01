@@ -17,7 +17,7 @@ module ContentHost
     # adds repository hash to ENC global parameters
     def params_with_repositories
       # convert all repos to a format that puppet create_resource with yumrepo can consume
-      repos = Hash[attached_repositories.map{ |repo| [repo.name, format_repo(repo)] }]
+      repos = Hash[attached_repositories.map{ |repo| [repo.to_label, format_repo(repo)] }]
       # adds a global parameter called repositories contain all repos
       params_without_repositories.merge('repositories' => repos)
     end
