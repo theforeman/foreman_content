@@ -14,5 +14,9 @@ module ContentHostgroup
     def inherited_product_ids
       Content::HostgroupProduct.where(:hostgroup_id => hostgroup.ancestor_ids).pluck(:product_id)
     end
+
+    def all_product_ids
+      (inherited_product_ids + product_ids).uniq
+    end
   end
 end
