@@ -13,26 +13,26 @@ module Content
         end
 
         def sync
-          Runcible::Resources::Repository.sync(pulp_id)
+          Content::Pulp.resources.repository.sync(pulp_id)
         end
 
         def retrieve_with_details
           return unless pulp? && pulp_id
-          Runcible::Resources::Repository.retrieve(pulp_id, {:details => true})
+          Content::Pulp.resources.repository.retrieve(pulp_id, {:details => true})
         end
 
         def sync_status
           return unless pulp? && pulp_id
-          Runcible::Extensions::Repository.sync_status(pulp_id)
+          Content::Pulp.extentions.repository.sync_status(pulp_id)
         end
 
         def sync_history
           return unless pulp? && pulp_id
-          Runcible::Extensions::Repository.sync_history(pulp_id)
+          Content::Pulp.extentions.repository.sync_history(pulp_id)
         end
 
         def delete
-          Runcible::Resources::Repository.delete(pulp_id)
+          Content::Pulp.resources.repository.delete(pulp_id)
         end
 
         protected

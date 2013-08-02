@@ -31,7 +31,7 @@ module Content::Orchestration::Pulp
   end
 
   def set_pulp_repo
-    Runcible::Extensions::Repository.create_with_importer_and_distributors(pulp_id,
+    Content::Pulp.extentions.repository.create_with_importer_and_distributors(pulp_id,
                                                                            pulp_importer,
                                                                            [pulp_distributor],
                                                                            { :display_name => relative_path,
@@ -51,7 +51,7 @@ module Content::Orchestration::Pulp
   def del_sync_pulp_repo
     status = sync_status
     return if status.blank? || status == ::PulpSyncStatus::Status::NOT_SYNCED
-    Runcible::Resources::Task.cancel(status.uuid)
+    Content::Pulp.resources.task.cancel(status.uuid)
   end
 
   def pulp_importer
