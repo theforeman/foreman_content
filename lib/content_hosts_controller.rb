@@ -10,7 +10,7 @@ module ContentHostsController
     def verify_repository_status
       return if new_record? || !built?
       @host.attached_repositories.each do |r|
-        flash[:warning] = "Repository '#{r.name}' is not ready to be used." unless r.sync_status.synced?
+        flash[:warning] = "Repository '#{r.name}' is not ready to be used." unless (r.sync_status.synced? rescue true)
       end
     end
   end
