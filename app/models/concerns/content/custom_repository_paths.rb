@@ -1,5 +1,7 @@
 module Content
   module CustomRepositoryPaths
+    extend ActiveSupport::Concern
+
     def repo_path_from_content_path(environment, content_path)
       content_path = content_path.sub(/^\//, "")
       path_prefix  = [environment.organization.label, environment.label].join("/")
