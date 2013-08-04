@@ -1,5 +1,3 @@
-require 'pulp_configuration'
-
 module Content
   ENGINE_NAME = "content"
   class Engine < ::Rails::Engine
@@ -20,7 +18,6 @@ module Content
 
     # Include extensions to models in this config.to_prepare block
     config.to_prepare do
-      ::PulpConfiguration.initialize_runcible
       # Patch the menu
       ::HomeHelper.send :include, Content::HomeHelper
       # Extend the taxonomy model
