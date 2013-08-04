@@ -41,6 +41,8 @@ module Content
       ::Hostgroup.send :include, ContentHostgroup
       # Extend the host model
       ::Host::Managed.send :include, ContentHost
+
+      ::HostsController.send :include, ContentHostsController
     end
   end
 
