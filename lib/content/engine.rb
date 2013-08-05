@@ -1,17 +1,10 @@
-require 'content_home_helper_patch'
-require 'content_taxonomy'
-require 'content_environment'
-require 'content_operatingsystem'
-require 'content_redhat'
-require 'content_hostgroup'
-require 'content_host'
-require 'pulp_configuration'
-
-
 module Content
   ENGINE_NAME = "content"
   class Engine < ::Rails::Engine
     engine_name Content::ENGINE_NAME
+
+    config.autoload_paths += Dir["#{config.root}/app/services"]
+    config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
 
     # Load this before the Foreman config initializers, so that the Setting.descendants
     # list includes the plugin STI setting class
@@ -21,26 +14,24 @@ module Content
 
     initializer "foreman_content.load_app_instance_data" do |app|
       app.config.paths['db/migrate'] += Content::Engine.paths['db/migrate'].existent
-      app.config.autoload_paths += Dir["#{config.root}/app/services)"]
     end
 
     # Include extensions to models in this config.to_prepare block
     config.to_prepare do
-      ::PulpConfiguration.initialize_runcible
       # Patch the menu
-      ::HomeHelper.send :include, ContentHomeHelperPatch
+      ::HomeHelper.send :include, Content::HomeHelper
       # Extend the taxonomy model
-      ::Taxonomy.send :include, ContentTaxonomy
+      ::Taxonomy.send :include, Content::TaxonomyExtensions
       # Extend the environment model
-      ::Environment.send :include, ContentEnvironment
+      ::Environment.send :include, Content::EnvironmentExtensions
       # Extend OS model
-      ::Operatingsystem.send :include, ContentOperatingsystem
+      ::Operatingsystem.send :include, Content::OperatingsystemExtensions
       # Extend RedHat OS family model
-      ::Redhat.send :include, ContentRedhat
+      ::Redhat.send :include, Content::RedhatExtensions
       # Extend the hostgroup model
-      ::Hostgroup.send :include, ContentHostgroup
+      ::Hostgroup.send :include, Content::HostgroupExtensions
       # Extend the host model
-      ::Host::Managed.send :include, ContentHost
+      ::Host::Managed.send :include, Content::HostExtensions
     end
   end
 
