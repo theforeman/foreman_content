@@ -5,7 +5,7 @@ module Content
         extend ActiveSupport::Concern
 
         included do
-          after_initialize :initialize_pulp
+          after_initialize :initialize_repository
         end
 
         def pulp?
@@ -13,32 +13,30 @@ module Content
         end
 
         def sync
-          Runcible::Resources::Repository.sync(pulp_id)
+          Content::Pulp.resources.repository.sync(pulp_id)
         end
 
         def retrieve_with_details
           return unless pulp? && pulp_id
-          Runcible::Resources::Repository.retrieve(pulp_id, {:details => true})
+          Content::Pulp.resources.repository.retrieve(pulp_id, {:details => true})
         end
 
         def sync_status
           return unless pulp? && pulp_id
-          Runcible::Extensions::Repository.sync_status(pulp_id)
+          Content::Pulp.extentions.repository.sync_status(pulp_id)
         end
 
         def sync_history
           return unless pulp? && pulp_id
-          Runcible::Extensions::Repository.sync_history(pulp_id)
+          Content::Pulp.extentions.repository.sync_history(pulp_id)
         end
 
         def delete
-          Runcible::Resources::Repository.delete(pulp_id)
+          Content::Pulp.resources.repository.delete(pulp_id)
         end
 
         protected
-        def initialize_pulp
-          # initiate pulp connection
-          Content::PulpConfiguration.new
+        def initialize_repository
           self.pulp_id       ||= Foreman.uuid.gsub("-", '')
           self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) if name
         end

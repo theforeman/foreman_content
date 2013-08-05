@@ -1,12 +1,15 @@
-require 'runcible'
-require 'uri'
-
-class Content::PulpConfiguration
-  def initialize options = {}
-    Runcible::Base.config = runcible_config.merge(options)
+class Content::Pulp
+  def self.resources
+    pulp_instance = ::Runcible::Instance.new(Content::Pulp.runcible_config)
+    pulp_instance.resources
   end
 
-  def runcible_config
+  def self.extentions
+    pulp_instance = ::Runcible::Instance.new(Content::Pulp.runcible_config)
+    pulp_instance.extensions
+  end
+
+  def self.runcible_config
     pulp_url = URI(Setting.pulp_url)
     {
       :url          => "#{pulp_url.scheme}://#{pulp_url.host}:#{pulp_url.port}",

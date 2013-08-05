@@ -1,3 +1,5 @@
+require 'runcible'
+
 module Content
   ENGINE_NAME = "content"
   class Engine < ::Rails::Engine
