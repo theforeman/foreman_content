@@ -1,13 +1,12 @@
 class Content::Pulp
   def self.resources
-    pulp_instance = Runcible::Instance.new(Content::Pulp.runcible_config)
+    pulp_instance = ::Runcible::Instance.new(Content::Pulp.runcible_config)
     pulp_instance.resources
   end
 
   def self.extentions
-    pulp_instance = Runcible::Instance.new.(Content::Pulp.runcible_config)
-    pulp_instance.extentions
-    end
+    pulp_instance = ::Runcible::Instance.new(Content::Pulp.runcible_config)
+    pulp_instance.extensions
   end
 
   def self.runcible_config

@@ -61,9 +61,9 @@ module Content::Orchestration::Pulp
 
     case content_type
       when Content::Repository::YUM_TYPE, Content::Repository::KICKSTART_TYPE
-        Runcible::Extensions::YumImporter.new(options)
+        Runcible::Models::YumImporter.new(options)
       when Content::Repository::FILE_TYPE
-        Runcible::Extensions::IsoImporter.new(options)
+        Runcible::Models::IsoImporter.new(options)
       else
         raise "Unexpected repo type %s" % content_type
     end
@@ -72,11 +72,11 @@ module Content::Orchestration::Pulp
   def pulp_distributor
     case content_type
       when Content::Repository::YUM_TYPE, Content::Repository::KICKSTART_TYPE
-        Runcible::Extensions::YumDistributor.new(relative_path, unprotected, true,
+        Runcible::Models::YumDistributor.new(relative_path, unprotected, true,
                                                  { :protected    => true, :id => pulp_id,
                                                    :auto_publish => true })
       when Content::Repository::FILE_TYPE
-        dist              = Runcible::Extensions::IsoDistributor.new(true, true)
+        dist              = Runcible::Models::IsoDistributor.new(true, true)
         dist.auto_publish = true
         dist
       else

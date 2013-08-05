@@ -5,7 +5,7 @@ module Content
         extend ActiveSupport::Concern
 
         included do
-          after_initialize :initialize_pulp
+          after_initialize :initialize_repository
         end
 
         def pulp?
@@ -36,9 +36,7 @@ module Content
         end
 
         protected
-        def initialize_pulp
-          # initiate pulp connection
-          Content::PulpConfiguration.new
+        def initialize_repository
           self.pulp_id       ||= Foreman.uuid.gsub("-", '')
           self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) if name
         end
