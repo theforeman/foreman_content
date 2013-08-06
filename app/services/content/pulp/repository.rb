@@ -157,7 +157,13 @@ class Content::Pulp::Repository
     @details ||= Runcible::Resources::Repository.retrieve(pulp_id, { :details => true })
   rescue RestClient::ResourceNotFound => e
     logger.warn "Repo not found: #{parse_error(e)}"
-    {}
+    {:state => 'not found'}
+  end
+
+  def state
+    return 'published'       if last_publish.present?
+    return sync_status.state if sync_status.present?
+    return details[:state]   if details[:state]
   end
 
   def parse_error exception

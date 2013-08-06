@@ -5,7 +5,7 @@ module Content::Orchestration::Pulp
   included do
     after_validation :queue_pulp
     before_destroy :queue_pulp_destroy unless Rails.env == "test"
-    delegate :last_sync, :sync_status, :sync, :counters, :last_publish, :sync_history, :to => :repo
+    delegate :last_sync, :sync_status, :sync, :counters, :last_publish, :sync_history, :state, :to => :repo
   end
 
   def orchestration_errors?
