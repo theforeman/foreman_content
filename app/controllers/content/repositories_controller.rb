@@ -34,7 +34,7 @@ module Content
 
     def show
       @details = @repository.retrieve_with_details
-      @sync_history = @repository.sync_history
+      @state = @repository.sync_status
     rescue
       redirect_back_or_to(edit_repository_path)
     end

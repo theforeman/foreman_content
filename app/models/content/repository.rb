@@ -4,7 +4,7 @@ require 'content/orchestration/pulp'
 module Content
   class Repository < ActiveRecord::Base
     include CustomRepositoryPaths
-    include Content::Remote::Pulp::Repository
+    include Content::Pulp::Repository
     include ::Orchestration
     include Content::Orchestration::Pulp
 
@@ -53,6 +53,10 @@ module Content
 
     def update_cache
       nil
+    end
+
+    def sync_status
+      Pulp::RepositorySyncStatus.for_repository(pulp_id)
     end
 
     def full_path
