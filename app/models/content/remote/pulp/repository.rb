@@ -38,7 +38,7 @@ module Content
         protected
         def initialize_pulp
           # initiate pulp connection
-          Content::PulpConfiguration.new
+          Content::Pulp::Configuration.new
           self.pulp_id       ||= Foreman.uuid.gsub("-", '')
           self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) if name
         end

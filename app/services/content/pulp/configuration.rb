@@ -1,7 +1,7 @@
 require 'runcible'
 require 'uri'
 
-class Content::PulpConfiguration
+class Content::Pulp::Configuration
   def initialize options = {}
     Runcible::Base.config = runcible_config.merge(options)
   end

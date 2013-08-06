@@ -1,4 +1,4 @@
-class Content::PulpEventHandler
+class Content::Pulp::EventHandler
   attr_reader :type, :status
   delegate :name, :to => :repo
   delegate :logger, :to => :Rails
