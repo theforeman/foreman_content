@@ -60,17 +60,13 @@ module Content::Orchestration::Pulp
 
   def repo_options
     {
-      :pulp_id       => (self.pulp_id ||= Foreman.uuid.gsub("-", '')),
-      :relative_path => default_relative_path,
+      :pulp_id       => pulp_id,
+      :relative_path => relative_path,
       :description   => description,
       :feed          => feed,
       :content_type  => content_type,
       :protected     => unprotected,
     }
-  end
-
-  def default_relative_path
-    self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) if name
   end
 
   def repo

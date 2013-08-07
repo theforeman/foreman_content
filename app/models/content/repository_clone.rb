@@ -1,13 +1,13 @@
 module Content
   class RepositoryClone
-    include Content::Remote::Pulp::Repository
-    include ::Orchestration
-    include Content::Orchestration::Pulp
+    include CustomRepositoryPaths
 
+    attr_reader :pulp
     belongs_to :repository
 
     after_initialize do
-      self.pulp_id = Foreman.uuid.gsub("-", '')
+      self.pulp_id ||= Foreman.uuid.gsub("-", '')
+      @pulp = Content::Pulp::Repository.new(:pulp_id => self.pulp_id, :relative_path => relative_path)
     end
 
     REPO_PREFIX = '/pulp/repos/'
@@ -20,13 +20,5 @@ module Content
             :content_operatingsystem_repositories => { :operatingsystem_id => host.operatingsystem_id},
             :content_environment_products => { :environment_id => host.environment_id }).
       uniq}
-
-
-    def full_path
-      pulp_url = URI.parse(Setting.pulp_url)
-      scheme   = (unprotected ? 'http' : 'https')
-      port     = (pulp_url.port == 443 || pulp_url.port == 80 ? "" : ":#{pulp_url.port}")
-      "#{scheme}://#{pulp_url.host}#{port}#{REPO_PREFIX}#{relative_path}"
-    end
   end
 end

@@ -4,11 +4,15 @@ require 'content/orchestration/pulp'
 module Content
   class Repository < ActiveRecord::Base
     include CustomRepositoryPaths
+    include ::Orchestration
+    include Content::Orchestration::Pulp
 
     YUM_TYPE       = 'yum'
     KICKSTART_TYPE = 'kickstart'
     FILE_TYPE      = 'iso'
     TYPES          = [YUM_TYPE, KICKSTART_TYPE, FILE_TYPE]
+
+    attr_reader :pulp
 
     belongs_to :product
     belongs_to :gpg_key
@@ -37,6 +41,12 @@ module Content
     scope :kickstart, where(:content_type => KICKSTART_TYPE)
     scope :yum, where(:content_type => YUM_TYPE)
 
+    after_initialize do
+      self.pulp_id ||= Foreman.uuid.gsub("-", '')
+      self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) + "_master"
+      @pulp = Content::Pulp::Repository.new(self.pulp_id)
+    end
+
     def update_cache
       nil
     end
@@ -46,8 +56,8 @@ module Content
       "#{product.name}-#{name}".parameterize
     end
 
-    def create_repository
-      repositories.create(
+    def publish
+      repository_clones.create(
         :feed => feed,
         :relative_path => custom_repo_path("acme_org", "library", product.name, name) + Foreman.uuid.gsub("-", '')
       )

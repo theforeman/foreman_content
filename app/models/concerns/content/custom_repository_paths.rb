@@ -2,6 +2,13 @@ module Content
   module CustomRepositoryPaths
     extend ActiveSupport::Concern
 
+    def full_path
+      pulp_url = URI.parse(Setting.pulp_url)
+      scheme   = (unprotected ? 'http' : 'https')
+      port     = (pulp_url.port == 443 || pulp_url.port == 80 ? "" : ":#{pulp_url.port}")
+      "#{scheme}://#{pulp_url.host}#{port}#{REPO_PREFIX}#{relative_path}"
+    end
+
     def repo_path_from_content_path(environment, content_path)
       content_path = content_path.sub(/^\//, "")
       path_prefix  = [environment.organization.label, environment.label].join("/")
