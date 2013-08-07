@@ -1,0 +1,16 @@
+<%= wizard_header 2, _("Select source type"), _("Select content"), _("Create") %>
+<%= form_for Content::ContentViewFactory.new, :url => hash_for_new_content_view_path, :class => 'form-horizontal well', :method => :get do |f| %>
+  <%= f.hidden_field :originator_id, :value => @hostgroup.id %>
+  <%= f.hidden_field :originator_type, :value => @hostgroup.class.name %>
+  <%= select_f f, :parent_cv, @hostgroup.parent.try(:content_views) || [], "id", "name",
+               :label => _("Parent Content view") %>
+  <h6>Products</h6>
+  <% @hostgroup.products.each do |product| %>
+    <%= select_f f, :product_cv, product.content_views, "id", "name", {}, :label => product.name %>
+  <% end %>
+
+  <h6>Operating System</h6>
+  <%= select_f f, :os_cv, @hostgroup.os.content_views, "id", "name" %>
+
+  <%= next_or_cancel hash_for_new_content_view_path() %>
+<% end %>

@@ -1,0 +1,11 @@
+<%= javascript 'content/content.js' %>
+
+<% title _("New Content View") %>
+
+<% if @content_view %>
+  <%= render :partial => 'form' %>
+<% elsif @hostgroup %>
+  <%= render :partial => 'step2' %>
+<% else %>
+  <%= render :partial => 'step1' %>
+<% end %>

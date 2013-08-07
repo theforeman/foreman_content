@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  description: MyString
+  repository: 
+  relative_path: MyString
+  content_view: 
+  pulp_id: MyString
+  status: MyString
+  last_published: 2013-08-13 14:04:55
+
+two:
+  name: MyString
+  description: MyString
+  repository: 
+  relative_path: MyString
+  content_view: 
+  pulp_id: MyString
+  status: MyString
+  last_published: 2013-08-13 14:04:55

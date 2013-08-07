@@ -1,0 +1,49 @@
+<%= form_for @content_view, :url => (@content_view.new_record? ? content_views_path : content_view_path(@content_view)) do |f| %>
+  <%= base_errors_for @content_view %>
+
+  <ul class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#primary" data-toggle="tab"><%= _("Content view") %></a></li>
+    <li><a href="#availability" data-toggle="tab"><%= _("Availability") %></a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="primary">
+      <%= text_f f, :name, :value => @content_view.to_label %>
+
+      <% if @content_view.new_record? %>
+        <% @content_view.source_repositories.each do |repo| %>
+          <%= f.hidden_field :source_repositories, :multiple => true, :value => repo.id %>
+        <% end if @content_view.source_repositories %>
+        <% @content_view.repository_clones.each do |repo| %>
+          <%= f.hidden_field :repository_clone_ids, :multiple => true, :value => repo.id %>
+        <% end if @content_view.repository_clones %>
+
+        <%= f.hidden_field :originator_id, :value => @content_view.originator_id %>
+        <%= f.hidden_field :originator_type, :value => @content_view.originator_type %>
+      <% end %>
+
+      <table class="table table-bordered">
+        <tr>
+          <th><%= _("Name") %></th>
+          <th><%= _("State") %></th>
+          <th><%= _("Last publish") %></th>
+          <th><%= _("Content type") %></th>
+        </tr>
+        <% repositories(@content_view).each do |repository| %>
+          <tr>
+            <td><%= repository.name %></td>
+            <td><%= repository.try(:state) %></td>
+            <td><%= last_time(repository.last_published) %></td>
+            <td><%= repository.content_type %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="tab-pane" id="availability">
+      <%= multiple_selects(f, :environments, Environment,
+                           Content::AvailableContentView.where(:content_view_id => @content_view.id).pluck(:environment_id),
+                           { :label => _('Available in environments') }) %>
+    </div>
+  </div>
+  <%= submit_or_cancel f %>
+<% end %>

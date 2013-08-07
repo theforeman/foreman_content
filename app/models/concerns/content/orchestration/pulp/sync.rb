@@ -1,19 +1,14 @@
-module Content::Orchestration::Pulp
+module Content::Orchestration::Pulp::Sync
   extend ActiveSupport::Concern
-  include ::Orchestration
+  include Content::Orchestration::Pulp
 
   included do
     after_validation :queue_pulp
-    before_destroy :queue_pulp_destroy unless Rails.env == "test"
-    delegate :last_sync, :sync_status, :sync, :counters, :last_publish, :sync_history, :state, :to => :repo
+    before_destroy :queue_pulp_destroy unless Rails.env.test?
   end
 
-  def orchestration_errors?
-    errors.empty?
-  end
-
-  def pulp?
-    @use_pulp ||= Setting.use_pulp and enabled?
+  def last_sync
+    read_attribute(:last_sync) || repo.last_sync
   end
 
   private
@@ -60,17 +55,13 @@ module Content::Orchestration::Pulp
 
   def repo_options
     {
-      :pulp_id       => (self.pulp_id ||= Foreman.uuid.gsub("-", '')),
-      :relative_path => default_relative_path,
+      :pulp_id       => pulp_repo_id,
+      :name          => to_label,
       :description   => description,
       :feed          => feed,
       :content_type  => content_type,
       :protected     => unprotected,
     }
-  end
-
-  def default_relative_path
-    self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) if name
   end
 
   def repo

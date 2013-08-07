@@ -7,23 +7,21 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
+      <%= f.hidden_field :type %>
       <%= select_f f, :product_id, Content::Product.all, :id, :name, {}, {:label => _("Product")} %>
       <%= text_f f, :name %>
       <%= text_f f, :feed, :class => 'span6' %>
-      <%= selectable_f f, :content_type, Content::Repository::TYPES %>
+      <%= selectable_f f, :content_type, @repository.content_types %>
       <%= select_f f, :architecture_id, ::Architecture.all, :id, :name, { :include_blank => N_("noarch")} %>
       <%= checkbox_f f, :enabled %>
 
       <%= select_f f, :gpg_key_id, Content::GpgKey.all, :id, :name, {:include_blank => true}, {:label => _("GPG Key")} %>
 
-      <% unless @repository.new_record? %>
-        <%= text_f f, :full_path, :disabled => true, :class => 'span6' %>
-      <% end %>
     </div>
     <div class="tab-pane" id="operatingsystems">
       <%= alert :class => 'controls alert-success', :header => 'Repository for operating systems',
-                        :text  => _('This Repository will be restricted only to hosts that runs the selected operating system') %>
-      <%= multiple_selects(f, :operatingsystems, ::Redhat, f.object.operatingsystem_ids) %>
+                :text  => _('This Repository will be restricted only to hosts that runs the selected operating system') %>
+      <%= multiple_selects(f, :operatingsystems, ::Redhat, @repository.operatingsystem_ids) %>
     </div>
   </div>
   <%= submit_or_cancel f %>

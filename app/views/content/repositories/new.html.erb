@@ -1,3 +1,6 @@
 <% title _("New Repository") %>
-
-<%= render :partial => 'form' %>
+<% if @repository.is_a? Content::Repository::OperatingSystem %>
+  <%= render :partial => "os_form" %>
+<% else %>
+  <%= render :partial => "product_form" %>
+<% end %>

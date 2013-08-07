@@ -1,0 +1,27 @@
+<% title _("Content Views") %>
+<% title_actions select_action_button( _('New content view'),
+                 display_link_if_authorized(_("Product view"), hash_for_new_content_view_path(:type=>'product')),
+                 display_link_if_authorized(_("Operating system view"), hash_for_new_content_view_path(:type=>'operatingsystem')),
+                 display_link_if_authorized(_("Hostgroup view"), hash_for_new_content_view_path(:type=>'hostgroup'))) %>
+
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th><%= sort :name, :as => s_("Name") %></th>
+    <th><%= _("Repositories") %></th>
+    <th><%= _("Created at") %></th>
+    <th></th>
+  </tr>
+  <% @content_views.each do |content_view| %>
+    <tr>
+      <td><%= link_to_if_authorized(h(content_view.name), hash_for_edit_content_view_path(content_view)) %></td>
+      <td><%= @counter[content_view.id] || '0' %></td>
+      <td><%= _("%s ago") % time_ago_in_words(content_view.created_at) %></td>
+      <td><%= action_buttons(
+            display_delete_if_authorized(hash_for_content_view_path(content_view), :confirm => "Delete #{content_view}?")
+      )%></td>
+    </tr>
+  <% end %>
+</table>
+<%= page_entries_info @content_views %>
+<%= will_paginate @content_views %>

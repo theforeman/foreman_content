@@ -5,6 +5,9 @@ module Content::HostExtensions
     has_many :host_products, :dependent => :destroy, :uniq => true, :foreign_key => :host_id, :class_name => 'Content::HostProduct'
     has_many :products, :through => :host_products, :class_name => 'Content::Product'
 
+    has_many :content_view_hosts, :dependent => :destroy, :uniq => true, :foreign_key => :host_id, :class_name => 'Content::ContentViewHost'
+    has_many :content_views, :through => :content_view_hosts, :class_name => 'Content::ContentView'
+
     scoped_search :in => :products, :on => :name, :complete_value => true, :rename => :product
 
     alias_method_chain :params, :repositories
@@ -30,8 +33,21 @@ module Content::HostExtensions
     (inherited_product_ids + product_ids).uniq
   end
 
+  def inherited_content_view_ids
+    return [] if hostgroup_id.nil? or environment_id.nil?
+
+    Content::ContentView.joins(:available_content_views).
+      where(:content_available_content_views => {:environment_id => environment_id}).
+      where(:originator_type => 'Hostgroup', :originator_id => hostgroup_id).pluck(:id)
+  end
+
+  def all_content_view_ids
+    (inherited_content_view_ids + content_view_ids).uniq
+  end
+
   def attached_repositories
-    Content::Repository.attached_to_host(self)
+    return [] if all_content_view_ids.empty?
+    Content::RepositoryClone.for_content_views(all_content_view_ids)
   end
 
   private

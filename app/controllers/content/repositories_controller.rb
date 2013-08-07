@@ -5,11 +5,18 @@ module Content
 
     def index
       @repositories = Repository.search_for(params[:search], :order => params[:order]).
-        paginate(:page => params[:page]).includes(:product, :operatingsystems)
+        paginate(:page => params[:page]).includes(:product, :operatingsystem)
     end
 
     def new
-      @repository = Repository.new(:unprotected => true)
+      @repository = case params[:type]
+                    when "operatingsystem"
+                      Repository::OperatingSystem.new(:unprotected => true)
+                    when "product"
+                      Repository::Product.new(:product_id => params[:product_id])
+                    else
+                      not_found
+                    end
     end
 
     def create

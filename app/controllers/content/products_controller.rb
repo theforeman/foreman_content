@@ -6,7 +6,7 @@ module Content
     def index
       @products = Product.search_for(params[:search], :order => params[:order]).
           paginate(:page => params[:page])
-      @counter = Repository.group(:product_id).where(:product_id => @products.map(&:id)).count
+      @counter = Repository::Product.group(:product_id).where(:product_id => @products.map(&:id)).count
     end
 
     def new

@@ -68,7 +68,28 @@ of an Installation media.
 * Product - the product from above.
 * GPG key - not implemented
 
-Once created, the repo would automatically be synced and published.
+Once created, the repo would automatically be synced but not yet visible for
+end users, for that you would need to create a Content View.
+
+## Creating Content Views
+
+Content Views, are a collection of immutibal repositories, these repositories
+are cloned from the synced repository and allow you to have multiple
+repositories definitions per Operation Systems, Custom yum repos, and
+Hostgroups.
+
+You would first need to create a content view per Product / Operation system.
+
+## Configuring Hostgroups (and hosts) to consume content views
+
+In your hostgroup definiton, you can select the operation system and the custom
+products you are interested in.
+
+next under the content view, you can create a new hostgroup content view, and
+select the releavnt content view you would like to consume within your hostgroup.
+
+You could also define the puppet environment(s) in which the content view is
+used.
 
 ## Consuming Repos within your Kickstart
 

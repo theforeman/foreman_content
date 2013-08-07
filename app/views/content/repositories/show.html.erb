@@ -41,10 +41,6 @@
         <td> <%= _("Unprotected") %> </td>
         <td> <%= @repository.unprotected %> </td>
       </tr>
-      <tr>
-        <td> <%= _("Full path") %> </td>
-        <td> <%= @repository.full_path %> </td>
-      </tr>
     </table>
   </div>
 </div>
@@ -72,10 +68,6 @@
           <td> <%= value %> </td>
         </tr>
       <% end -%>
-      <tr>
-        <td> <%= _("Last published") %> </td>
-        <td> <%= last_time @repository.last_publish %> </td>
-      </tr>
       <tr>
         <td> <%= _("Last synchronized") %> </td>
         <td> <%= last_time @repository.last_sync %> </td>
