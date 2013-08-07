@@ -12,6 +12,7 @@ class CreateContentRepositories < ActiveRecord::Migration
       t.string      :pulp_id
       t.references  :gpg_key
       t.references  :architecture
+      t.datetime    :last_sync
       t.timestamps
     end
     add_index :content_repositories, :pulp_id, :unique => true
