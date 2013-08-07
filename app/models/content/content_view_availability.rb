@@ -10,10 +10,16 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 module Content
-  class EnvironmentProduct < ActiveRecord::Base
-    belongs_to :product
+  class ContentViewAvailability < ActiveRecord::Base
     belongs_to :environment
-    validates_presence_of :product_id, :environment_id
-    validates_uniqueness_of :product_id, :scope => :environment_id
+    belongs_to :operatingsystem
+    belongs_to :hostgroup
+    belongs_to :content_view
+
+    #todo needs to validate that default can't be archived and vice-versa
+    #todo needs to validate that os or hostgroup exist but not both
+    validates_presence_of :operatingsystem_id, :unless => :hostgroup_id
+    validates_presence_of :hostgroup_id, :unless => :operatingsystem_id
+
   end
 end
