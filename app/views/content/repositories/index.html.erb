@@ -6,6 +6,7 @@
     <th><%= sort :name, :as => s_("Name") %></th>
     <th><%= _("Product") %></th>
     <th><%= _("Operating system") %></th>
+    <th><%= _("State") %></th>
     <th><%= _("Last sync status") %></th>
     <th><%= _("Content type") %></th>
     <th></th>
@@ -15,7 +16,8 @@
       <td><%= link_to_if_authorized(h(repository.name), hash_for_repository_path(repository)) %></td>
       <td><%= repository.product %></td>
       <td><%= repository.operatingsystems.map(&:to_label).to_sentence %></td>
-      <td><%= sync_status repository  %></td>
+      <td><%= repository.try(:state) %></td>
+      <td><%= last_time(repository.last_sync) %></td>
       <td><%= repository.content_type %></td>
       <td align="right">
         <%= action_buttons(

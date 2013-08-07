@@ -33,10 +33,6 @@ module Content
     end
 
     def show
-      @details = @repository.retrieve_with_details
-      @sync_history = @repository.sync_history
-    rescue
-      redirect_back_or_to(edit_repository_path)
     end
 
     def destroy

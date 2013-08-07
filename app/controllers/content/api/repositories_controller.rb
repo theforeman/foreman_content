@@ -11,7 +11,7 @@ module Content
           repo = Content::Repository.where(:pulp_id => repo_id).first
         end
         render_error 'not_found', :status => :not_found and return false if repo.nil?
-        PulpEventHandler.new(repo_id, params)
+        Pulp::EventHandler.new(repo_id, params)
         head :status => 202
       end
 
