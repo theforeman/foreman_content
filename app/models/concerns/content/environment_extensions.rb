@@ -2,8 +2,8 @@ module Content::EnvironmentExtensions
   extend ActiveSupport::Concern
 
   included do
-    has_many :environment_products, :dependent => :destroy, :uniq => true, :class_name => 'Content::EnvironmentProduct'
-    has_many :products, :through => :environment_products, :class_name => 'Content::Product'
+    has_many :available_content_veiws, :dependent => :destroy, :class_name => 'Content::AvailableContentView'
+    has_many :content_views, :through => :available_content_veiws, :class_name => 'Content::ContentView'
   end
 
 end

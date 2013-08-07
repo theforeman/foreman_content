@@ -8,7 +8,9 @@ class CreateContentRepositories < ActiveRecord::Migration
       t.string      :relative_path
       t.string      :feed, :null => false
       t.boolean     :unprotected, :default => false
-      t.references  :product, :null => false
+      t.references  :product
+      t.references  :operatingsystem
+      t.string      :pulp_id
       t.references  :gpg_key
       t.references  :architecture
       t.datetime    :last_sync

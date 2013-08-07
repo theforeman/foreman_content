@@ -13,13 +13,13 @@ module Content
     belongs_to :product
     belongs_to :gpg_key
     belongs_to :architecture
-    has_many :operatingsystem_repositories, :dependent => :destroy, :uniq => true
-    has_many :operatingsystems, :through => :operatingsystem_repositories
+    belongs_to :operatingsystems
     has_many :repository_clones
 
-    validates :product, :presence => true
+    validates_presence_of :product, :unless => :operatingsystem_id
+    validates_presence_of :operatingsystem, :unless => :product_id
     validates :name, :presence => true
-    validates_uniqueness_of :name, :scope => :product_id
+    validates_uniqueness_of :name, :scope => [:product_id, :operatingsystem_id]
     validates_inclusion_of :content_type,
                            :in          => TYPES,
                            :allow_blank => false,

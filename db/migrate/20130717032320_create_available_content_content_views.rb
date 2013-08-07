@@ -1,6 +1,6 @@
-class CreateContentContentViewAvailabilities < ActiveRecord::Migration
+class CreateContentAvailableContentViews < ActiveRecord::Migration
   def change
-    create_table :content_content_view_availabilities do |t|
+    create_table :content_available_content_views do |t|
        t.references :environment, :null =>false
        t.references :content_view, :null =>false
        t.references :hostgroup
