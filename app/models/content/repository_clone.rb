@@ -1,9 +1,10 @@
 module Content
   class RepositoryClone
-    include CustomRepositoryPaths
+    include Content::Orchestration::Pulp
 
     attr_reader :pulp
     belongs_to :repository
+    belongs_to :content_view
 
     after_initialize do
       self.pulp_id ||= Foreman.uuid.gsub("-", '')
@@ -14,6 +15,7 @@ module Content
 
     # Repositories filtered by operating system architecture and environment.
     # architecture_id is nil for noarch repositories.
+    # todo: rewrite this scope
     scope :available_for_host, lambda { |host|
       joins(:repository_definition => {:operatingsystems => :operatingsystem_repositories}, :repository_definition =>  {:product => :environments}).
       where(:architecture_id => [nil, host.architecture_id],

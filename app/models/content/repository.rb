@@ -4,15 +4,12 @@ require 'content/orchestration/pulp'
 module Content
   class Repository < ActiveRecord::Base
     include CustomRepositoryPaths
-    include ::Orchestration
     include Content::Orchestration::Pulp
 
     YUM_TYPE       = 'yum'
     KICKSTART_TYPE = 'kickstart'
     FILE_TYPE      = 'iso'
     TYPES          = [YUM_TYPE, KICKSTART_TYPE, FILE_TYPE]
-
-    attr_reader :pulp
 
     belongs_to :product
     belongs_to :gpg_key
