@@ -40,8 +40,6 @@ module Content
 
     after_initialize do
       self.pulp_id ||= Foreman.uuid.gsub("-", '')
-      self.relative_path ||= custom_repo_path("acme_org", "library", product.name, name) + "_master"
-      @pulp = Content::Pulp::Repository.new(self.pulp_id)
     end
 
     def update_cache
