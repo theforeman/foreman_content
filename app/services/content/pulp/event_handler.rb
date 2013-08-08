@@ -4,7 +4,7 @@ class Content::Pulp::EventHandler
   delegate :logger, :to => :Rails
 
   def initialize(pulp_id, params)
-    @repo          = Content::Repository.where(:pulp_id => pulp_id).first
+    @repo          = Content::RepositoryBase.where(:pulp_id => pulp_id).first
     @params        = params
     @type, @status = parse_type
     log

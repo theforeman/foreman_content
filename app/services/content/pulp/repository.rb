@@ -43,24 +43,6 @@ class Content::Pulp::Repository
     raise parse_error(e)
   end
 
-  def copy(target_repo_id)
-    events = []
-    # In order to reduce the memory usage of pulp during the copy process,
-    # include the fields that will uniquely identify the rpm. If no fields
-    # are listed, pulp will retrieve every field it knows about for the rpm
-    # (e.g. changelog, filelist...etc).
-    events << Runcible::Extensions::Rpm.copy(pulp_id, target_repo_id, { :fields => PULP_SELECT_FIELDS })
-    events << Runcible::Extensions::Distribution.copy(pulp_id, target_repo_id)
-
-    # Since the rpms will be copied above, during the copy of errata and package groups,
-    # include the copy_children flag to request that pulp skip copying them again.
-    events << Runcible::Extensions::Errata.copy(pulp_id, target_repo_id, { :copy_children => false })
-    events << Runcible::Extensions::PackageGroup.copy(pulp_id, target_repo_id, { :copy_children => false })
-    events << Runcible::Extensions::YumRepoMetadataFile.copy(pulp_id, target_repo_id)
-
-    events
-  end
-
   def display_name
     details['display_name']
   end
@@ -119,6 +101,10 @@ class Content::Pulp::Repository
 
   def sync
     Runcible::Resources::Repository.sync(pulp_id)
+  end
+
+  def publish
+    Runcible::Resources::Repository.publish_all(pulp_id)
   end
 
   def cancel_running_sync!

@@ -1,7 +1,6 @@
 require 'content/orchestration/pulp'
 module Content
-  class Repository < ActiveRecord::Base
-    include CustomRepositoryPaths
+  class Repository < RepositoryBase
     include Content::Orchestration::Pulp
 
     YUM_TYPE       = 'yum'

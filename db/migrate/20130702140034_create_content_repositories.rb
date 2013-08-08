@@ -1,7 +1,8 @@
 class CreateContentRepositories < ActiveRecord::Migration
   def change
     create_table    :content_repositories do |t|
-      t.string      :pulp_id
+      t.string      :type
+      t.string      :pulp_id, :null => false
       t.string      :name, :null => false
       t.string      :description
       t.string      :content_type, :default => "yum", :null => false
@@ -9,12 +10,16 @@ class CreateContentRepositories < ActiveRecord::Migration
       t.string      :relative_path, :null => false
       t.string      :feed, :null => false
       t.boolean     :unprotected, :default => false
-      t.references  :product
-      t.references  :operatingsystem
       t.string      :pulp_id
       t.references  :gpg_key
       t.references  :architecture
-      t.datetime    :last_sync
+      t.string      :status
+      t.datetime    :published # repository clone
+      t.datetime    :last_sync # repository master
+      t.references  :product # repository master
+      t.references  :operatingsystem # repository master
+      t.references  :repository # repository clone
+      t.references  :content_view # repository clone
       t.timestamps
     end
     add_index :content_repositories, :pulp_id, :unique => true
