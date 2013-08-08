@@ -2,6 +2,8 @@ module Content
   module CustomRepositoryPaths
     extend ActiveSupport::Concern
 
+    REPO_PREFIX = '/pulp/repos/'
+
     def full_path
       pulp_url = URI.parse(Setting.pulp_url)
       scheme   = (unprotected ? 'http' : 'https')

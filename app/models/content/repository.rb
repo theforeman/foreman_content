@@ -1,6 +1,4 @@
 require 'content/orchestration/pulp'
-# TODO: split into a custom and red hat repositories:
-# as handling of repo creation/updates is different between them
 module Content
   class Repository < ActiveRecord::Base
     include CustomRepositoryPaths
@@ -31,10 +29,6 @@ module Content
     scoped_search :in => :operatingsystems, :on => :name, :rename => :os, :complete_value => :true
     scoped_search :in => :product, :on => :name, :rename => :product, :complete_value => :true
 
-    scope :attached_to_host, lambda { |host|
-      where(:product_id => host.all_product_ids).available_for_host(host)
-    }
-
     scope :kickstart, where(:content_type => KICKSTART_TYPE)
     scope :yum, where(:content_type => YUM_TYPE)
 
@@ -53,7 +47,6 @@ module Content
 
     def publish
       repository_clones.create(
-        :feed => feed,
         :relative_path => custom_repo_path("acme_org", "library", product.name, name) + Foreman.uuid.gsub("-", '')
       )
     end
