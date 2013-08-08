@@ -6,10 +6,7 @@ module Content
     belongs_to :repository
     belongs_to :content_view
 
-    after_initialize do
-      self.pulp_id ||= Foreman.uuid.gsub("-", '')
-      @pulp = Content::Pulp::Repository.new(:pulp_id => self.pulp_id, :relative_path => relative_path)
-    end
+    delegate :feed, :to => :repository
 
     REPO_PREFIX = '/pulp/repos/'
 

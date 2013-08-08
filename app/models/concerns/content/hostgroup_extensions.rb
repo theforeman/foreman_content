@@ -5,7 +5,7 @@ module Content::HostgroupExtensions
     has_many :hostgroup_products, :dependent => :destroy, :uniq => true, :class_name => 'Content::HostgroupProduct'
     has_many :products, :through => :hostgroup_products, :class_name => 'Content::Product'
 
-    has_many :available_content_veiws, :dependent => :destroy, :class_name => 'Content::AvailableContentView'
+    has_many :available_content_views, :dependent => :destroy, :class_name => 'Content::AvailableContentView'
     has_many :content_views, :through => :available_content_veiws, :class_name => 'Content::ContentView'
 
     scoped_search :in => :products, :on => :name, :complete_value => true, :rename => :product

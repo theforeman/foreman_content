@@ -3,7 +3,6 @@ class CreateContentRepositoryClones < ActiveRecord::Migration
     create_table    :content_repository_clones do |t|
       t.references  :repository
       t.references  :content_view
-      t.string      :feed, :null => false
       t.string      :relative_path, :null => false
       t.string      :pulp_id, :null => false
       t.string      :status
