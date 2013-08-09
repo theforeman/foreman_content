@@ -1,8 +1,7 @@
 class Content::Pulp::Repository
   PULP_SELECT_FIELDS = ['name', 'epoch', 'version', 'release', 'arch', 'checksumtype', 'checksum']
 
-  attr_accessor :pulp_id,  :content_type
-  attr_writer :relative_path, :description
+  attr_reader :pulp_id,  :content_type, :relative_path, :description
   delegate :logger, :to => :Rails
 
   class << self
@@ -104,7 +103,7 @@ class Content::Pulp::Repository
   end
 
   def publish
-    Runcible::Resources::Repository.publish_all(pulp_id)
+    Runcible::Extensions::Repository.publish_all(pulp_id)
   end
 
   def cancel_running_sync!

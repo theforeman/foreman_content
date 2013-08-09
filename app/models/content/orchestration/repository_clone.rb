@@ -43,7 +43,6 @@ module Content::Orchestration::RepositoryClone
   end
 
   def set_pulp_repo
-    Runcible::Resources::EventNotifier
     repo.create
   end
 
@@ -65,6 +64,7 @@ module Content::Orchestration::RepositoryClone
     #only create a notifier if one doesn't exist with the correct url
     exists = notifs.select{|n| n['event_types'] == [type] && n['notifier_config']['url'] == url}
     resource.create(resource::NotifierTypes::REST_API, {:url=>url}, [type]) if exists.empty?
+    true
   end
 
   def del_pulp_repo
@@ -74,9 +74,9 @@ module Content::Orchestration::RepositoryClone
   def repo_options
     {
       :pulp_id       => pulp_id,
-      :relative_path => relative_path,
+      :relative_path  => relative_path,
       :content_type  => content_type,
-      :protected     => :false,
+      :protected     => false,
     }
   end
 

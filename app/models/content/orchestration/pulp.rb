@@ -61,7 +61,7 @@ module Content::Orchestration::Pulp
   def repo_options
     {
       :pulp_id       => pulp_id,
-      :relative_path => relative_path,
+      :relative_path  => relative_path,
       :description   => description,
       :feed          => feed,
       :content_type  => content_type,

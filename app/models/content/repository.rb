@@ -33,10 +33,7 @@ module Content
 
     after_initialize do
       self.pulp_id ||= Foreman.uuid.gsub("-", '')
-    end
-
-    def update_cache
-      nil
+      self.relative_path = custom_repo_path("acme_org", "library", product.name, name) + "_master"
     end
 
     # The label is used as a repository label in a yum repo file.
@@ -46,6 +43,7 @@ module Content
 
     def publish
       repository_clones.create(
+        :name => self.name + "_clone",
         :relative_path => custom_repo_path("acme_org", "library", product.name, name) + Foreman.uuid.gsub("-", '')
       )
     end
