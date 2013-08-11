@@ -13,11 +13,20 @@ module Content
     end
 
     def create
-      @repository = Repository.new(params[:content_repository])
-      if @repository.save
-        process_success
-      else
-        process_error
+      case params[:content_repository][:operatingsystem]
+        when "operatingsystem"
+          @repository = Repository.new(:unprotected => true, :operatingsystem_id => ::Redhat.first.id)
+          redirect_to new_repository_path(:page => "os_form")
+        when "product"
+          @repository = Repository.new(:unprotected => true, :product_id => Product.first.id)
+          redirect_to new_repository_path(:page => "product_form")
+        else
+          @repository = Repository.new(params[:content_repository])
+          if @repository.save
+            process_success
+          else
+            process_error
+          end
       end
     end
 

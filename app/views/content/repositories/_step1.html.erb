@@ -1,0 +1,14 @@
+<%= form_for @repository, :url => repositories_path do |f| %>
+  <%= base_errors_for @repository %>
+  <%= wizard_header 1, _("Select role"), _("Create"), _("Clone") %>
+  <%= alert :class => 'controls alert-success', :header => 'Operating systems install media or product',
+            :text  => _('Please select this repository role, a repository can be an operating system install media or belong to a product that can run on several operating systems.') %>
+  <div id='provisioning_method' >
+    <%= field(f, :oparatingsystem, :label => _('Role')) do
+      radio_button_f(f, :operatingsystem, :value=>'operatingsystem', :checked=> true, :text=> _("Operating system install media"))+
+      radio_button_f(f, :operatingsystem, :value=>'product', :checked=> false, :text=> _("Product"))
+    end %>
+  </div>
+
+  <%= submit_or_cancel f %>
+<% end %>

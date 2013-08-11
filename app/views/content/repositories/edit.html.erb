@@ -1,3 +1,6 @@
 <% title _("Edit Repository") %>
-
-<%= render :partial => 'form' %>
+<% if @repository.operatingsystem_id %>
+  <%= render :partial => 'os_form' %>
+<% else %>
+  <%= render :partial => 'product_form' %>
+<% end %>

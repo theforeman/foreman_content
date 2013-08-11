@@ -1,3 +1,6 @@
 <% title _("New Repository") %>
-
-<%= render :partial => 'form' %>
+<% if params[:page] %>
+  <%= render :partial => params[:page] %>
+<% else %>
+  <%= render :partial => 'step1' %>
+<% end %>
