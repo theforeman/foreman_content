@@ -3,8 +3,8 @@ module Content::Orchestration::RepositoryClone
   include ::Orchestration
 
   included do
-    after_validation :repository_clone_save  unless Rails.env == "test"
-    before_destroy :repository_clone_destroy unless Rails.env == "test"
+    after_validation :repository_clone_save  unless Rails.env.test?
+    before_destroy :repository_clone_destroy unless Rails.env.test?
     delegate :last_sync, :sync_status, :sync, :counters, :last_publish, :sync_history, :state, :to => :repo
   end
 
@@ -43,7 +43,7 @@ module Content::Orchestration::RepositoryClone
   end
 
   def set_pulp_repo
-    repo.create
+    repo.create_with_distributor
   end
 
   def set_copy_pulp_repo

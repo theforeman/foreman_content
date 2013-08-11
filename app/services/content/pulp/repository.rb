@@ -1,7 +1,7 @@
 class Content::Pulp::Repository
   PULP_SELECT_FIELDS = ['name', 'epoch', 'version', 'release', 'arch', 'checksumtype', 'checksum']
 
-  attr_reader :pulp_id,  :content_type, :relative_path, :description
+  attr_reader :pulp_id,  :content_type, :relative_path, :name, :description
   delegate :logger, :to => :Rails
 
   class << self
@@ -31,15 +31,12 @@ class Content::Pulp::Repository
     Content::Pulp::Configuration.new
   end
 
+  def create_with_distributor
+    create_repository [pulp_distributor]
+  end
+
   def create
-    defaults
-    Runcible::Extensions::Repository.create_with_importer_and_distributors(pulp_id,
-                                                                           pulp_importer,
-                                                                           [pulp_distributor],
-                                                                           { :display_name => relative_path,
-                                                                             :description  => description })
-  rescue RestClient::BadRequest => e
-    raise parse_error(e)
+    create_repository
   end
 
   def display_name
@@ -115,6 +112,17 @@ class Content::Pulp::Repository
 
   private
 
+  def create_repository pulp_distributors = []
+    defaults
+    Runcible::Extensions::Repository.create_with_importer_and_distributors(pulp_id,
+                                                                           pulp_importer,
+                                                                           pulp_distributors,
+                                                                           { :display_name => relative_path || name,
+                                                                             :description  => description })
+  rescue RestClient::BadRequest => e
+    raise parse_error(e)
+  end
+
   def pulp_importer
     options = {
       :feed_url => feed
@@ -146,8 +154,7 @@ class Content::Pulp::Repository
   end
 
   def defaults
-    @protected    = true if @protected.nil?
-    @auto_publish = true if auto_publish.nil?
+    @protected = true if @protected.nil?
   end
 
   def importer

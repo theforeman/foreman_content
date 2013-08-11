@@ -7,7 +7,7 @@ class CreateContentRepositories < ActiveRecord::Migration
       t.string      :description
       t.string      :content_type, :default => "yum", :null => false
       t.boolean     :enabled, :default => true
-      t.string      :relative_path, :null => false
+      t.string      :relative_path
       t.string      :feed
       t.boolean     :unprotected, :default => false
       t.string      :pulp_id
