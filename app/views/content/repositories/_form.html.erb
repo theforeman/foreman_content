@@ -3,7 +3,7 @@
   <%= base_errors_for @repository %>
   <ul class="nav nav-tabs" data-tabs="tabs">
     <li class="active"><a href="#primary" data-toggle="tab"><%= _("Repository") %></a></li>
-
+    <li><a href="#operatingsystems" data-toggle="tab"><%= _("Operating systems") %></a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
@@ -20,7 +20,11 @@
         <%= text_f f, :full_path, :disabled => true, :class => 'span6' %>
       <% end %>
     </div>
-
+    <div class="tab-pane" id="operatingsystems">
+      <%= alert :class => 'controls alert-success', :header => 'Repository for operating systems',
+                :text  => _('This Repository will be restricted only to hosts that runs the selected operating system') %>
+      <%= multiple_selects(f, :operatingsystems, ::Redhat, f.object.operatingsystem_ids) %>
+    </div>
   </div>
   <%= submit_or_cancel f %>
 <% end %>

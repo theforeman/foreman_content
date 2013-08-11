@@ -11,7 +11,9 @@ module Content
     belongs_to :product
     belongs_to :gpg_key
     belongs_to :architecture
-    belongs_to :operatingsystems
+    belongs_to :operatingsystem
+    has_many :operatingsystem_repositories, :dependent => :destroy, :uniq => true
+    has_many :operatingsystems, :through => :operatingsystem_repositories
     has_many :repository_clones
 
     validates_presence_of :product, :unless => :operatingsystem_id
@@ -33,7 +35,7 @@ module Content
 
     after_initialize do
       self.pulp_id ||= Foreman.uuid.gsub("-", '')
-      self.relative_path = custom_repo_path("acme_org", "library", product.name, name) + "_master"
+      #self.relative_path = custom_repo_path("acme_org", "library", product.name, name) + "_master"
     end
 
     # The label is used as a repository label in a yum repo file.
