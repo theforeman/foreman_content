@@ -1,0 +1,32 @@
+<%= javascript 'content/content.js' %>
+<%= form_for @content_view, :url => (@content_view.new_record? ? content_views_path : content_view_path(@content_view)) do |f| %>
+  <%= base_errors_for @content_view %>
+  <% if @content_view.product_id %>
+    <%= text_f f, :product, :disabled=> true %>
+    <%= f.hidden_field :product_id %>
+  <% end %>
+  <% if @content_view.operatingsystem_id %>
+    <%= text_f f, :operatingsystem, :disabled => true %>
+    <%= f.hidden_field :operatingsystem_id %>
+  <% end %>
+  <%= text_f f, :name, :value => @content_view.to_label %>
+
+  <table class="table table-bordered">
+    <tr>
+      <th><%= _("Name") %></th>
+      <th><%= _("State") %></th>
+      <th><%= _("Last sync status") %></th>
+      <th><%= _("Content type") %></th>
+    </tr>
+    <% origin = @content_view.product || @content_view.operatingsystem %>
+    <% origin.repositories.each do |repository| %>
+      <tr>
+        <td><%= repository.name %></td>
+        <td><%= repository.try(:state) %></td>
+        <td><%= last_time(repository.last_sync) %></td>
+        <td><%= repository.content_type %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= submit_or_cancel f %>
+<% end %>

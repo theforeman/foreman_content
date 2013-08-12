@@ -1,0 +1,7 @@
+<% title _("New Content View") %>
+
+<% if params[:product] || params[:operatingsystem] %>
+  <%= render :partial => 'form' %>
+<% else %>
+  <%= render :partial => 'step1' %>
+<% end %>

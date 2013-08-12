@@ -43,10 +43,10 @@ module Content
       "#{product.name}-#{name}".parameterize
     end
 
-    def publish
+    def publish product_name
       repository_clones.create(
         :name => self.name + "_clone",
-        :relative_path => custom_repo_path("acme_org", "library", product.name, name) + Foreman.uuid.gsub("-", '')
+        :relative_path => custom_repo_path("acme_org", "library", product_name, name) + Foreman.uuid.gsub("-", '')
       )
     end
   end

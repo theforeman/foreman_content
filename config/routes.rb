@@ -6,6 +6,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :content_views do
+      collection do
+        get 'auto_complete_search'
+      end
+    end
+
     resources :products do
       collection do
         get 'auto_complete_search'

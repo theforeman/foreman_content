@@ -1,0 +1,16 @@
+
+<% title _("Content Views") %>
+<% title_actions display_link_if_authorized(_("New Content View"), hash_for_new_content_view_path), help_path %>
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th><%= sort :name, :as => s_("Name") %></th>
+  </tr>
+  <% @content_views.each do |content_view| %>
+    <tr>
+      <td><%= link_to_if_authorized(h(content_view.name), hash_for_edit_content_view_path(:id => content_view.name)) %></td>
+    </tr>
+  <% end %>
+</table>
+<%= page_entries_info @content_views %>
+<%= will_paginate @content_views %>

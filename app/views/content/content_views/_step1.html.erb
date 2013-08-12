@@ -1,0 +1,8 @@
+<%= form_for @content_view, :url => content_views_path do |f| %>
+  <%= base_errors_for @content_view %>
+  <%= wizard_header 1, _("Select origin"), _("Create") %>
+  <%= alert :class => 'controls alert-success', :header => 'Select operating systems or product',
+            :text  => _('Please select operating system or product.') %>
+  <%# todo select os or product %>
+  <%= submit_or_cancel f %>
+<% end %>
