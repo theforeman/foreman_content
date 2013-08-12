@@ -6,7 +6,7 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
-      <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operatingsystem")} %>
+      <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
       <%= text_f f, :name %>
       <%= text_f f, :feed, :class => 'span6' %>
       <%= selectable_f f, :content_type, Content::Repository::TYPES %>

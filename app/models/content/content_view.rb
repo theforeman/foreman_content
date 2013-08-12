@@ -15,12 +15,16 @@ module Content
 
 
     def to_label
+      name || "#{originator_name}-#{DateTime.now}"
+    end
+
+    def originator_name
       origin = product || operatingsystem
-      name || "#{origin.to_label}-#{DateTime.now}"
+      origin ? origin.to_label: ''
     end
 
     def clone_repos
-      origin = product || operatingsystem
+      return unless origin = product || operatingsystem
       origin.repositories.each do |repository|
         repository.publish origin.name
       end

@@ -1,5 +1,6 @@
 <% title _("Repositories") %>
-<% title_actions display_link_if_authorized(_("New Repository"), hash_for_new_repository_path), help_path %>
+<% title_actions display_link_if_authorized(_("New Product Repository"), hash_for_new_repository_path(:page=>'product_form')),
+                 display_link_if_authorized(_("New Operating system Repository"), hash_for_new_repository_path(:page=>'os_form')), help_path %>
 
 <table class="table table-bordered table-striped">
   <tr>

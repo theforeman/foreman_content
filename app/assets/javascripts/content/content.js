@@ -10,3 +10,14 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+
+function toggleOsProduct(item)
+{
+  toggleDisable($('#content_content_view_operatingsystem_id'));
+  toggleDisable($('#content_content_view_product_id'));
+}
+
+function toggleDisable(item)
+{
+  $(item).attr('disabled',!$(item).attr('disabled'))
+}

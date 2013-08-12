@@ -26,7 +26,7 @@
         <td><%= last_time(repository.last_sync) %></td>
         <td><%= repository.content_type %></td>
       </tr>
-    <% end %>
+    <% end if origin %>
   </table>
   <%= submit_or_cancel f %>
 <% end %>

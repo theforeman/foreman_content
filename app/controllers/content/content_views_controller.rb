@@ -16,12 +16,17 @@ module Content
     end
 
     def create
+      if params[:content_content_view].delete(:operatingsystem)
+        @content_view = ContentView.new(params[:content_content_view])
+        redirect_to new_content_view_path(:operatingsystem=>@content_view.operatingsystem_id,:product=>@content_view.product_id)
+      else
       @content_view = ContentView.new(params[:content_content_view])
       if @content_view.save
         process_success
       else
         process_error
       end
+        end
     end
 
     def edit

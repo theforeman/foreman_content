@@ -14,10 +14,10 @@ module Content
 
     def create
       case params[:content_repository][:operatingsystem]
-        when "operatingsystem"
+        when "operatingsystem" #wizard step1 selected os repo
           @repository = Repository.new(:unprotected => true, :operatingsystem_id => ::Redhat.first.id)
           redirect_to new_repository_path(:page => "os_form")
-        when "product"
+        when "product" #wizard step1 selected product repo
           @repository = Repository.new(:unprotected => true, :product_id => Product.first.id)
           redirect_to new_repository_path(:page => "product_form")
         else

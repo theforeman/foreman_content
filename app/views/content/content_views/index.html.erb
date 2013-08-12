@@ -5,10 +5,14 @@
 <table class="table table-bordered table-striped">
   <tr>
     <th><%= sort :name, :as => s_("Name") %></th>
+    <th><%= _("Originator") %></th>
+    <th><%= _("Created at") %></th>
   </tr>
   <% @content_views.each do |content_view| %>
     <tr>
       <td><%= link_to_if_authorized(h(content_view.name), hash_for_edit_content_view_path(:id => content_view.name)) %></td>
+      <td><%= content_view.originator_name %></td>
+      <td><%= _("%s ago") % time_ago_in_words(content_view.created_at) %></td>
     </tr>
   <% end %>
 </table>
