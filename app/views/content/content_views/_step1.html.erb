@@ -8,7 +8,7 @@
       radio_button_f(f, :operatingsystem, :value=>'operatingsystem', :checked=> true, :onchange=>'toggleOsProduct(this)', :text=> _("Operating system"))+
       radio_button_f(f, :operatingsystem, :value=>'product', :checked=> false, :onchange=>'toggleOsProduct(this)', :text=> _("Product"))
     end %>
-  <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
-  <%= select_f f, :product_id, Content::Product.all, :id, :name, {}, {:disabled=>true, :label => _("Product")} %>
+  <%= select_f f, :operatingsystem_id, ::Redhat.has_repos.all, :id, :to_label, {}, {:label => _("Operating System")} %>
+  <%= select_f f, :product_id, Content::Product.has_repos.all, :id, :name, {}, {:disabled=>true, :label => _("Product")} %>
   <%= submit_or_cancel f %>
 <% end %>
