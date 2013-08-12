@@ -14,7 +14,7 @@
   <% @repositories.each do |repository| %>
     <tr>
       <td><%= link_to_if_authorized(h(repository.name), hash_for_repository_path(repository)) %></td>
-      <td><%= repository.product %></td>
+      <td><%= repository.product || repository.operatingsystem.try(:to_label) %></td>
       <td><%= repository.try(:state) %></td>
       <td><%= last_time(repository.last_sync) %></td>
       <td><%= repository.content_type %></td>

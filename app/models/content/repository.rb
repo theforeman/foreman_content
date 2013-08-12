@@ -40,7 +40,8 @@ module Content
 
     # The label is used as a repository label in a yum repo file.
     def to_label
-      "#{product.name}-#{name}".parameterize
+      origin = product || operatingsystem
+      "#{origin.to_label}-#{name}".parameterize
     end
 
     def publish product_name
