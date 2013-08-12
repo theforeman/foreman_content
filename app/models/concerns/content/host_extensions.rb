@@ -5,6 +5,9 @@ module Content::HostExtensions
     has_many :host_products, :dependent => :destroy, :uniq => true, :foreign_key => :host_id, :class_name => 'Content::HostProduct'
     has_many :products, :through => :host_products, :class_name => 'Content::Product'
 
+    has_many :content_view_hosts, :dependent => :destroy, :uniq => true, :foreign_key => :host_id, :class_name => 'Content::ContentViewHost'
+    has_many :content_views, :through => :content_view_hosts, :class_name => 'Content::ContentView'
+
     scoped_search :in => :products, :on => :name, :complete_value => true, :rename => :product
 
     alias_method_chain :params, :repositories

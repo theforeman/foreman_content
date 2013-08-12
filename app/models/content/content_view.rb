@@ -4,6 +4,9 @@ module Content
     has_many :hostgroup, :through => :available_content_views
     delegate :operatingsystems, :to => :available_content_views, :allow_nil => true
 
+    has_many :content_view_hosts, :dependent => :destroy, :uniq => true, :foreign_key => :content_view_id, :class_name => 'Content::ContentViewHost'
+    has_many :hosts, :through => :content_view_hosts
+
     belongs_to :product
     belongs_to :operatingsystem
 
