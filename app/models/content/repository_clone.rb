@@ -1,20 +1,13 @@
 module Content
-  class RepositoryClone < RepositoryBase
-    include Content::Orchestration::RepositoryClone
+  class RepositoryClone < ActiveRecord::Base
+    include Content::Orchestration::Pulp::Clone
 
     belongs_to :repository
     belongs_to :content_view
+    attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status
 
-    validate :relative_path, :repository, :presence => true #TODO same for content_view
+    validate :relative_path, :repository_id, :content_view_id, :presence => true
 
-    delegate :feed, :to => :repository
-
-    after_initialize do
-      self.pulp_id ||= Foreman.uuid.gsub("-", '')
-      @pulp = Content::Pulp::RepositoryClone.new(
-        :pulp_id => self.pulp_id, :content_type => "yum", :relative_path => self.relative_path)
-    end
-
-    def content_type; "yum"; end
+    delegate :content_type, :architecture, :unprotected, :gpg_key, :product,  :to => :repository
   end
 end

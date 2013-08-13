@@ -2,7 +2,7 @@ module Content
   class Product < ActiveRecord::Base
     include ::Taxonomix
 
-    has_many :repositories
+    has_many :repositories, :class_name => 'Content::ProductRepository'
 
     has_many :hostgroup_products, :dependent => :destroy, :uniq=>true
     has_many :hostgroups, :through => :hostgroup_products

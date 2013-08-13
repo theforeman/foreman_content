@@ -110,6 +110,19 @@ class Content::Pulp::Repository
     # task already done, nothing to do here
   end
 
+  # once we keep a list pulp servers, this should be done in create/destroy
+  def create_event_notifier
+    url      = events_repositories_url(:only_path => false, :host => Setting[:foreman_url])
+    type     = '*'
+    resource = Runcible::Resources::EventNotifier
+    notifs   = resource.list
+
+    #only create a notifier if one doesn't exist with the correct url
+    exists   = notifs.select { |n| n['event_types'] == [type] && n['notifier_config']['url'] == url }
+    resource.create(resource::NotifierTypes::REST_API, { :url => url }, [type]) if exists.empty?
+    true
+  end
+
   private
 
   def create_repository pulp_distributors = []

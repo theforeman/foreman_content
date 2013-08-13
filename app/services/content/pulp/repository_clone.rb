@@ -1,5 +1,5 @@
 class Content::Pulp::RepositoryClone < Content::Pulp::Repository
-  PULP_SELECT_FIELDS = ['name', 'epoch', 'version', 'release', 'arch', 'checksumtype', 'checksum']
+  PULP_SELECT_FIELDS = %w(name epoch version release arch checksumtype checksum)
 
   def copy_from(src_repo_id)
     # In order to reduce the memory usage of pulp during the copy process,
