@@ -1,4 +1,3 @@
-require 'content/orchestration/pulp'
 module Content
   class Repository < RepositoryBase
     include Content::Orchestration::Pulp
