@@ -9,7 +9,7 @@ class CreateContentContentViews < ActiveRecord::Migration
       t.timestamps
     end
     add_index(:content_content_views, :ancestry,:name=>'content_view_ancestry_index')
-    add_index :content_content_views, [:originator_id, :originator_type]
+    add_index :content_content_views, [:originator_id, :originator_type], :name => 'content_view_id_type_index'
     add_index :content_content_views, :originator_type
   end
 end
