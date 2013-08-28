@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "rails", "~> 3.2.8"
-  s.add_dependency "logging", ">= 1.8.0"
   s.add_dependency "runcible", "= 0.4.10"
   s.add_dependency "deface"
 end
