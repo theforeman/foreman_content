@@ -29,6 +29,7 @@ touch tmp/restart.txt (if using passeger)
 
 ## Pulp
 * enable oauth authentication
+* make sure you have enough disk space! lots of GB to /var/lib/pulp and /var/lib/mongo
 
 ## UI config
 
@@ -50,6 +51,11 @@ You would see in the UI under More, a new sub menu called content, in it:
 * Product    - The actual product you are managing, for example CentOS 6
 * Repository - list of repositories that belong to the above product, for
 example, CentOS 6.4 + CentOS updates.
+* Content View - a collection of cloned repositories
+
+## Create a Product
+
+If you are planning to sync non OS packages (e.g. 3rd party yum repo), you should first create a product, e.g. Foreman 1.2-stable, afterwards, you can add repositories to it.
 
 ## Syncing Repositories
 
@@ -63,8 +69,6 @@ of an Installation media.
 * Architecture - type of files within the repo, usually X86_64 or noarch etc.
 * Operating Systems - list of valid OS's that this repo applies to.
 * Enabled - true / false
-* Unprotected - weather pulp should expose this repo via http and https or just
-  over https.
 * Product - the product from above.
 * GPG key - not implemented
 
