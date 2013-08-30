@@ -1,7 +1,7 @@
 module Content
   class RepositoriesController < ::ApplicationController
     include Foreman::Controller::AutoCompleteSearch
-    before_filter :find_by_name, :only => %w{show edit update destroy sync}
+    before_filter :find_repo, :only => %w{show edit update destroy sync}
 
     def index
       @repositories = Repository.search_for(params[:search], :order => params[:order]).
@@ -55,6 +55,12 @@ module Content
       process_success(:success_msg => _("Successfully started sync for %s") % @repository.to_label)
     rescue => e
       process_error(:error_msg => _("Failed to start sync for %s") % @repository.to_label)
+    end
+
+    private
+
+    def find_repo
+      @repository = Content::Repository.find(params[:id])
     end
   end
 end
