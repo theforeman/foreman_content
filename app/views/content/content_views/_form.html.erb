@@ -26,7 +26,7 @@
         <tr>
           <th><%= _("Name") %></th>
           <th><%= _("State") %></th>
-          <th><%= _("Last publish") %></th>
+          <th><%= f.object.originator.is_a?(Hostgroup) ? _("Last publish") : _('Last Sync') %></th>
           <th><%= _("Content type") %></th>
         </tr>
         <% repositories(@content_view).each do |repository| %>
@@ -34,6 +34,7 @@
             <td><%= repository.name %></td>
             <td><%= repository.try(:state) %></td>
             <td><%= last_time(repository.last_published) %></td>
+            <th><%= last_time(f.object.originator.is_a?(Hostgroup) ? repository.last_published : repository.last_sync %></td>
             <td><%= repository.content_type %></td>
           </tr>
         <% end %>

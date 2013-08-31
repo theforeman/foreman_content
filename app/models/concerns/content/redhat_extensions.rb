@@ -6,7 +6,7 @@ module Content::RedhatExtensions
   end
 
   def medium_uri_with_content_uri host, url = nil
-    if url.nil? && (full_path = Content::Repository.available_for_host(host).kickstart.first.try(:full_path))
+    if url.nil? && (full_path = kickstart_repo(host).try(:full_path))
       URI.parse(full_path)
     else
       medium_uri_without_content_uri(host, url)
@@ -16,7 +16,7 @@ module Content::RedhatExtensions
   # return an array of repositories for kickstart script as additional repos
   # to the kickstart main repo, this list will typically include updates and epel
   def repos host
-    host.attached_repositories.yum.map { |repo| format_repo(repo) }
+    yum_repos(host).map { |repo| format_repo(repo) }
   end
 
   private
@@ -30,4 +30,13 @@ module Content::RedhatExtensions
       :gpgcheck    => !!repo.gpg_key
     }
   end
+
+  def kickstart_repo host
+    host.attached_repositories.detect{|r| r.content_type == Content::Repository::KICKSTART_TYPE}
+  end
+
+  def yum_repos host
+    host.attached_repositories.select{|r| r.content_type == Content::Repository::YUM_TYPE}
+  end
+
 end

@@ -38,7 +38,7 @@ module Content::HostExtensions
 
     Content::ContentView.joins(:available_content_views).
       where(:content_available_content_views => {:environment_id => environment_id}).
-      where(:originator_type => 'Hostgroup', :originator_id => hostgroup_id).pluck(:id)
+      where(:originator_type => 'Hostgroup', :originator_id => hostgroup_id).pluck('content_content_views.id')
   end
 
   def all_content_view_ids
