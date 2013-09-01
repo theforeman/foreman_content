@@ -6,15 +6,8 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
-      <%= f.hidden_field :type %>
       <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
-      <%= text_f f, :name %>
-      <%= text_f f, :feed, :class => 'span6' %>
-      <%= selectable_f f, :content_type, @repository.content_types %>
-      <%= select_f f, :architecture_id, ::Architecture.all, :id, :name, { :include_blank => N_("noarch")} %>
-      <%= checkbox_f f, :enabled %>
-
-      <%= select_f f, :gpg_key_id, Content::GpgKey.all, :id, :name, {:include_blank => true}, {:label => _("GPG Key")} %>
+      <%= render :partial => 'fields', :locals => {:f => f} %>
 
     </div>
   </div>

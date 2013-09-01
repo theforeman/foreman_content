@@ -47,7 +47,7 @@ module Content
     def clone_repos
       return unless @source_repositories
       Repository.where(:id => @source_repositories).each do |repository|
-        repository.publish self
+        repository.clone self
       end
     end
 

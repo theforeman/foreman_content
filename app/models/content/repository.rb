@@ -2,6 +2,7 @@ module Content
   class Repository < ActiveRecord::Base
     include Content::Orchestration::Pulp::Sync
     include Foreman::STI
+    include Content::RepositoryCommon
 
     YUM_TYPE       = 'yum'
     KICKSTART_TYPE = 'kickstart'
@@ -20,6 +21,7 @@ module Content
 
     validates :name, :presence => true
     validates_uniqueness_of :name, :scope => [:operatingsystem_id, :product_id]
+    validates :feed, :presence => true, :uniqueness => true
     validates_inclusion_of :content_type,
                            :in          => TYPES,
                            :allow_blank => false,
@@ -47,7 +49,7 @@ module Content
       ''
     end
 
-    def publish content_view
+    def clone content_view
       repository_clones.create!(
         :content_views => [content_view],
         :name => self.name + "_clone",

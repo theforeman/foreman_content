@@ -1,8 +1,7 @@
 module Content
   class RepositoryClone < ActiveRecord::Base
     include Content::Orchestration::Pulp::Clone
-
-    REPO_PREFIX = '/pulp/repos/'
+    include Content::RepositoryCommon
 
     belongs_to :repository
     has_many :content_view_repository_clones, :dependent => :destroy
@@ -19,11 +18,5 @@ module Content
         where('content_content_view_repository_clones' => {:content_view_id => ids})
     }
 
-    def full_path
-      pulp_url = URI.parse(Setting.pulp_url)
-      scheme   = (unprotected ? 'http' : 'https')
-      port     = (pulp_url.port == 443 || pulp_url.port == 80 ? "" : ":#{pulp_url.port}")
-      "#{scheme}://#{pulp_url.host}#{port}#{REPO_PREFIX}#{relative_path}"
-    end
   end
 end

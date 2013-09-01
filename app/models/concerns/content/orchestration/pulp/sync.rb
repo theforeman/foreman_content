@@ -38,7 +38,7 @@ module Content::Orchestration::Pulp::Sync
   end
 
   def set_pulp_repo
-    repo.create
+    publish ? repo.create_with_distributor : repo.create
   end
 
   def del_pulp_repo
@@ -61,10 +61,16 @@ module Content::Orchestration::Pulp::Sync
       :feed          => feed,
       :content_type  => content_type,
       :protected     => unprotected,
+      :relative_path => relative_path,
+      :auto_publish  => publish
     }
   end
 
   def repo
     @repo ||= Content::Pulp::Repository.new(repo_options)
+  end
+
+  def relative_path
+    to_label.parameterize
   end
 end
