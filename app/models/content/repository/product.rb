@@ -3,8 +3,9 @@ module Content
 
     has_many :operatingsystem_repositories, :foreign_key => :repository_id, :dependent => :destroy, :uniq => true
     has_many :operatingsystems, :through => :operatingsystem_repositories
+    delegate :description, :to => :product
 
-    validates_presence_of :product
+    validates_presence_of :product_id
 
     def self.model_name
       Repository.model_name
@@ -17,5 +18,6 @@ module Content
     def entity_name
       product.name
     end
+
   end
 end

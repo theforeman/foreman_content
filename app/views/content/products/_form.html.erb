@@ -1,15 +1,9 @@
 <%= javascript 'content/content.js' %>
 <%= form_for @product, :url => (@product.new_record? ? products_path : product_path(@product)) do |f| %>
   <%= base_errors_for @product %>
-  <ul class="nav nav-tabs" data-tabs="tabs">
-    <li class="active"><a href="#primary" data-toggle="tab"><%= _("Product") %></a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="primary">
-      <%= text_f f, :name %>
-      <%= textarea_f f, :description, :class => "input-xlarge" , :rows=> '3' %>
-    </div>
 
-  </div>
+  <%= text_f f, :name %>
+  <%= textarea_f f, :description, :class => "input-xlarge", :rows => '3' %>
+
   <%= submit_or_cancel f %>
 <% end %>

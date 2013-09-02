@@ -11,12 +11,14 @@ module Content
     attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status, :content_views
     validate :relative_path, :repository_id, :presence => true
 
-    delegate :content_type, :architecture, :unprotected, :gpg_key, :product, :enabled, :to => :repository
+    delegate :content_type, :architecture, :unprotected, :gpg_key, :product, :operatingsystem, :enabled, :to => :repository
 
     scope :for_content_views, lambda { |ids|
       joins(:content_view_repository_clones).
         where('content_content_view_repository_clones' => {:content_view_id => ids})
     }
+
+    default_scope { includes(:repository) }
 
   end
 end

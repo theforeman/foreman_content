@@ -26,15 +26,14 @@
         <tr>
           <th><%= _("Name") %></th>
           <th><%= _("State") %></th>
-          <th><%= f.object.originator.is_a?(Hostgroup) ? _("Last publish") : _('Last Sync') %></th>
+          <th><%= f.object.kind_of?(Content::Repository) ? _('Last Sync') : _('Last Publish') %></th>
           <th><%= _("Content type") %></th>
         </tr>
         <% repositories(@content_view).each do |repository| %>
           <tr>
             <td><%= repository.name %></td>
             <td><%= repository.try(:state) %></td>
-            <td><%= last_time(repository.last_published) %></td>
-            <th><%= last_time(f.object.originator.is_a?(Hostgroup) ? repository.last_published : repository.last_sync %></td>
+            <td><%= last_time(repository.kind_of?(Content::Repository) ? repository.last_sync : repository.last_published) %></td>
             <td><%= repository.content_type %></td>
           </tr>
         <% end %>
