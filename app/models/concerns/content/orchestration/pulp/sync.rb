@@ -6,8 +6,8 @@ module Content::Orchestration::Pulp::Sync
     after_validation :queue_pulp
     before_destroy :queue_pulp_destroy unless Rails.env.test?
     attr_accessor :interval, :hour, :minute, :schedule
-    validates :interval, :inclusion => { :in => %w(D W) }
-    validates :hour, :minute, :numericality => true
+    validates :interval, :inclusion => { :in => %w(D W) }, :if => :schedule_sync?
+    validates :hour, :minute, :numericality => true, :if => :schedule_sync?
   end
 
   def last_sync
@@ -28,7 +28,7 @@ module Content::Orchestration::Pulp::Sync
     logger.debug "Scheduling new Pulp Repository Sync"
     queue.create(:name   => _("Sync Pulp Repository %s") % self, :priority => 20,
                  :action => [self, :set_sync_pulp_repo])
-    if schedule.present?
+    if schedule_sync?
       logger.debug "Scheduling Pulp Repository sync scheduler"
       queue.create(:name   => _("Sync Schedule Pulp Repository %s") % self, :priority => 30,
                    :action => [self, :set_sync_schedule_pulp_repo])
@@ -89,6 +89,10 @@ module Content::Orchestration::Pulp::Sync
 
   def relative_path
     to_label.parameterize
+  end
+
+  def schedule_sync?
+    schedule.present?
   end
 
   def sync_schedule_time
