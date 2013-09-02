@@ -10,6 +10,7 @@ module Content
     has_many :content_view_hosts, :dependent => :destroy, :uniq => true, :foreign_key => :content_view_id, :class_name => 'Content::ContentViewHost'
     has_many :hosts, :through => :content_view_hosts
 
+    before_destroy :clean_unused_clone_repos
     has_many :content_view_repository_clones, :dependent => :destroy
     has_many :repository_clones, :through => :content_view_repository_clones, :class_name => 'Content::RepositoryClone'
     has_many :repositories, :through => :repository_clones
@@ -19,7 +20,6 @@ module Content
     scope :operatingsystem, where(:originator_type => 'Operatingsystem')
 
     after_save :clone_repos
-    before_destroy :clean_unused_clone_repos
 
     validates_presence_of :name
 
@@ -60,6 +60,8 @@ module Content
         where(['content_view_id IS NOT ?', id]).pluck(:repository_clone_id)
 
       repos_to_delete = current_repos - used_repos
+      logger.debug('All Cloned repositories are used elsewhere, nothing to do') if repos_to_delete.empty?
+      logger.debug("Clone Repos IDS: #{repos_to_delete.join(', ')} are unused - deleting...") if repos_to_delete.any?
       Content::RepositoryClone.destroy(repos_to_delete) if repos_to_delete.any?
     end
   end
