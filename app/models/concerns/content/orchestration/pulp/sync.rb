@@ -88,7 +88,7 @@ module Content::Orchestration::Pulp::Sync
   end
 
   def relative_path
-    to_label.parameterize
+    "#{entity_name}/#{name}"
   end
 
   def schedule_sync?
