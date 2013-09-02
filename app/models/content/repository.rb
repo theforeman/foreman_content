@@ -13,6 +13,7 @@ module Content
     belongs_to :gpg_key
     belongs_to :architecture
     has_many :repository_clones
+    has_many :content_view_repository_clones, :dependent => :destroy, :as => :repository
 
     before_validation :set_originator_type
     before_destroy EnsureNotUsedBy.new(:repository_clones)
@@ -61,7 +62,7 @@ module Content
       repository_clones.create!(
         :content_views => [content_view],
         :name => self.name + "_clone",
-        :relative_path => "content_views/#{to_label}/#{Foreman.uuid}"
+        :relative_path => "content_views/#{entity_name}/#{name}/#{Foreman.uuid}"
       )
     end
 

@@ -4,7 +4,7 @@ module Content
     include Content::RepositoryCommon
 
     belongs_to :repository
-    has_many :content_view_repository_clones, :dependent => :destroy
+    has_many :content_view_repository_clones, :dependent => :destroy, :as => :repository
     has_many :content_views, :through => :content_view_repository_clones
     before_destroy EnsureNotUsedBy.new(:content_views)
 

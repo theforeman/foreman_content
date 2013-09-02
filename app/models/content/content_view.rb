@@ -12,7 +12,8 @@ module Content
 
     before_destroy :clean_unused_clone_repos
     has_many :content_view_repository_clones, :dependent => :destroy
-    has_many :repository_clones, :through => :content_view_repository_clones, :class_name => 'Content::RepositoryClone'
+    has_many :repository_clones, :through => :content_view_repository_clones,
+             :source => :repository, :source_type => 'Content::RepositoryClone'
     has_many :repositories, :through => :repository_clones
 
     scope :hostgroups, where(:originator_type => 'Hostgroup')
