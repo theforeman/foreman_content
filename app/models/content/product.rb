@@ -2,7 +2,7 @@ module Content
   class Product < ActiveRecord::Base
     include ::Taxonomix
 
-    has_many :repositories
+    has_many :repositories, :as => :originator
     has_many :repository_clones, :through => :repositories
     has_many :content_views, :as => :originator
 

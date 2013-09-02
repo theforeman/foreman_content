@@ -1,11 +1,9 @@
 module Content
   class Repository::Product < Repository
-
+    alias_method :product, :originator
     has_many :operatingsystem_repositories, :foreign_key => :repository_id, :dependent => :destroy, :uniq => true
     has_many :operatingsystems, :through => :operatingsystem_repositories
     delegate :description, :to => :product
-
-    validates_presence_of :product_id
 
     def self.model_name
       Repository.model_name
@@ -19,5 +17,10 @@ module Content
       product.name
     end
 
+    private
+
+    def set_originator_type
+      self.originator_type = 'Content::Product'
+    end
   end
 end

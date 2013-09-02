@@ -8,7 +8,7 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
-      <%= select_f f, :product_id, Content::Product.all, :id, :name, { :prompt => _('Please Select') }, { :label => _("Product") } %>
+      <%= select_f f, :originator_id, Content::Product.all, :id, :name, { :prompt => _('Please Select') }, { :label => _("Product") } %>
       <%= render :partial => 'fields', :locals => { :f => f } %>
     </div>
     <div class="tab-pane" id="operatingsystems">

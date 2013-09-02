@@ -7,7 +7,7 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
-      <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
+      <%= select_f f, :originator_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
       <%= render :partial => 'fields', :locals => {:f => f} %>
     </div>
     <div class="tab-pane" id="sync_schedule">

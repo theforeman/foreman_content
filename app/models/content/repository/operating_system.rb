@@ -1,7 +1,6 @@
 module Content
   class Repository::OperatingSystem < Repository
-
-    validates_presence_of :operatingsystem_id
+    alias_method :operatingsystem, :originator
 
     def self.model_name
       Repository.model_name
@@ -13,6 +12,12 @@ module Content
 
     def description
       entity_name
+    end
+
+    private
+
+    def set_originator_type
+      self.originator_type ||= 'Operatingsystem'
     end
   end
 end
