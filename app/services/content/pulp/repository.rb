@@ -126,6 +126,19 @@ class Content::Pulp::Repository
     true
   end
 
+  def sync_schedule=(schedule)
+    type = Runcible::Extensions::YumImporter::ID
+    if schedule.present?
+      Runcible::Resources::RepositorySchedule.create(pulp_id, type, schedule)
+    else
+      Runcible::Extensions::Repository.remove_schedules(pulp_id, type)
+    end
+  end
+
+  def sync_schedule
+    Runcible::Resources::RepositorySchedule.list(pulp_id, Runcible::Extensions::YumImporter::ID)
+  end
+
   private
 
   def create_repository pulp_distributors = []

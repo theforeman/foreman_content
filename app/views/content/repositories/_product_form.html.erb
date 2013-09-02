@@ -4,17 +4,22 @@
   <ul class="nav nav-tabs" data-tabs="tabs">
     <li class="active"><a href="#primary" data-toggle="tab"><%= _("Repository") %></a></li>
     <li><a href="#operatingsystems" data-toggle="tab"><%= _("Operating systems") %></a></li>
+    <li><a href="#sync_schedule" data-toggle="tab"><%= _("Sync Schedule") %></a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
-      <%= select_f f, :product_id, Content::Product.all, :id, :name, {:prompt => _('Please Select')}, {:label => _("Product")} %>
-      <%= render :partial => 'fields', :locals => {:f => f} %>
+      <%= select_f f, :product_id, Content::Product.all, :id, :name, { :prompt => _('Please Select') }, { :label => _("Product") } %>
+      <%= render :partial => 'fields', :locals => { :f => f } %>
     </div>
     <div class="tab-pane" id="operatingsystems">
       <%= alert :class => 'controls alert-success', :header => 'Repository for operating systems',
                 :text  => _('This Repository will be restricted only to hosts that runs the selected operating system') %>
       <%= multiple_selects(f, :operatingsystems, ::Redhat, @repository.operatingsystem_ids) %>
     </div>
+    <div class="tab-pane" id="sync_schedule">
+      <%= render :partial => 'sync_schedule', :locals => { :f => f } %>
+    </div>
+
   </div>
   <%= submit_or_cancel f %>
 <% end %>

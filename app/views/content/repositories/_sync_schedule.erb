@@ -1,0 +1,10 @@
+<%= checkbox_f f, :schedule, :label => _('Schedule Sync'),
+    :help_inline => _('Sync this repository periodically') %>
+
+<div class='control-group'>
+<div class='controls'>
+
+  <%= sync_schedule_selector(f) %>
+</div>
+</div>
+

@@ -5,6 +5,9 @@ module Content::Orchestration::Pulp::Sync
   included do
     after_validation :queue_pulp
     before_destroy :queue_pulp_destroy unless Rails.env.test?
+    attr_accessor :interval, :hour, :minute, :schedule
+    validates :interval, :inclusion => { :in => %w(D W) }
+    validates :hour, :minute, :numericality => true
   end
 
   def last_sync
@@ -22,8 +25,14 @@ module Content::Orchestration::Pulp::Sync
     logger.debug "Scheduling new Pulp Repository"
     queue.create(:name   => _("Create Pulp Repository for %s") % self, :priority => 10,
                  :action => [self, :set_pulp_repo])
+    logger.debug "Scheduling new Pulp Repository Sync"
     queue.create(:name   => _("Sync Pulp Repository %s") % self, :priority => 20,
                  :action => [self, :set_sync_pulp_repo])
+    if schedule.present?
+      logger.debug "Scheduling Pulp Repository sync scheduler"
+      queue.create(:name   => _("Sync Schedule Pulp Repository %s") % self, :priority => 30,
+                   :action => [self, :set_sync_schedule_pulp_repo])
+    end
   end
 
   def queue_pulp_update
@@ -53,6 +62,14 @@ module Content::Orchestration::Pulp::Sync
     repo.cancel_running_sync!
   end
 
+  def set_sync_schedule_pulp_repo
+    repo.sync_schedule = sync_schedule_time
+  end
+
+  def del_sync_schedule_pulp_repo
+    repo.sync_schedule = nil
+  end
+
   def repo_options
     {
       :pulp_id       => pulp_repo_id,
@@ -73,4 +90,12 @@ module Content::Orchestration::Pulp::Sync
   def relative_path
     to_label.parameterize
   end
+
+  def sync_schedule_time
+    return if schedule.blank?
+    time       = Time.parse("00:#{hour}:#{minute}").iso8601
+    repetition = "R1" # no limit of hour many syncs
+    "#{repetition}/#{time}/P1#{interval}"
+  end
+
 end

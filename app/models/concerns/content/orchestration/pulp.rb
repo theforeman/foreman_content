@@ -3,7 +3,7 @@ module Content::Orchestration::Pulp
   include ::Orchestration
 
   included do
-    delegate :sync_status, :sync, :counters, :sync_history, :state, :to => :repo
+    delegate :sync_status, :sync, :sync_schedule, :counters, :sync_history, :state, :to => :repo
   end
 
   def orchestration_errors?

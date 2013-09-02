@@ -3,12 +3,15 @@
   <%= base_errors_for @repository %>
   <ul class="nav nav-tabs" data-tabs="tabs">
     <li class="active"><a href="#primary" data-toggle="tab"><%= _("Repository") %></a></li>
+    <li><a href="#sync_schedule" data-toggle="tab"><%= _("Sync Schedule") %></a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="primary">
       <%= select_f f, :operatingsystem_id, ::Redhat.all, :id, :to_label, {}, {:label => _("Operating System")} %>
       <%= render :partial => 'fields', :locals => {:f => f} %>
-
+    </div>
+    <div class="tab-pane" id="sync_schedule">
+      <%= render :partial => 'sync_schedule', :locals => { :f => f } %>
     </div>
   </div>
   <%= submit_or_cancel f %>
