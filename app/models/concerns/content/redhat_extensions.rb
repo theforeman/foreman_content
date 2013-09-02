@@ -25,7 +25,7 @@ module Content::RedhatExtensions
     {
       :baseurl     => repo.full_path,
       :name        => repo.to_label,
-      :description => repo.product.description,
+      :description => repo.description,
       :enabled     => repo.enabled,
       :gpgcheck    => !!repo.gpg_key
     }
