@@ -92,7 +92,7 @@ module Content::Orchestration::Pulp::Sync
   end
 
   def schedule_sync?
-    schedule.present?
+    schedule.present? && schedule != '0'
   end
 
   def sync_schedule_time
