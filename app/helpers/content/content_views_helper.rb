@@ -1,11 +1,13 @@
 module Content
   module ContentViewsHelper
 
-    def repositories(view)
-      if view.new_record?
-        view.source_repositories + view.repository_clones
+    def repositories
+      cv_repos = @content_view.repository_clones + @content_view.repository_sources
+
+      if @content_view.new_record? && cv_repos.empty? # new form
+        @factory.repositories
       else
-        view.repository_clones
+        cv_repos # edit or new after validation failure
       end
     end
 
@@ -15,6 +17,24 @@ module Content
         link_to(_("Cancel"), args[:cancel_path], :class => "btn") + " " +
         submit_tag( _("Next"), :class => "btn btn-primary")
       end
+    end
+
+    def step?
+      if params[:type]
+        'step1'
+      elsif @hostgroup
+        'composite'
+      else
+        'form'
+      end
+    end
+
+    def options_for_type_selection repo
+      options = [[_('Clone (snapshot)'), 'clone']]
+      options << [_('Latest'),'latest'] if repo.kind_of?(Content::Repository) && repo.publish?
+      selected = 'clone' if @factory # default
+      selected ||= @content_view.repository_clone_ids.include?(repo.id) ? 'clone' : 'latest' # on validation error
+      options_for_select(options, selected)
     end
 
   end

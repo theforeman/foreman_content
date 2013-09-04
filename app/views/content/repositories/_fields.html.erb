@@ -6,4 +6,4 @@
 <%= checkbox_f f, :publish, { :disabled => !f.object.new_record?,
                               :help_inline => _('should this repository be directly accessible or as a feed for content views?') } %>
 <%= select_f f, :gpg_key_id, Content::GpgKey.all, :id, :name, {:include_blank => true}, {:label => _("GPG Key")} %>
-<%= f.hidden_field :type %>
+<%= f.hidden_field :type if f.object.new_record? %>

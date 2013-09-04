@@ -5,16 +5,29 @@ module Content
 
     def index
       @content_views = ContentView.search_for(params[:search], :order => params[:order]).
-          paginate(:page => params[:page])
-      @counter = RepositoryClone.joins(:content_view_repository_clones).group(:content_view_id).count
+        paginate(:page => params[:page])
+      @counter       = ContentViewRepositoryClone.where(:content_view_id => @content_views.map(&:id)).group(:content_view_id).count
 
     end
 
+    def show
+    end
+
     def new
-      @hostgroup = Hostgroup.find_by_id(params[:hostgroup]) if params[:hostgroup]
-      @content_view = ContentViewFactory.create_product_content_view(params[:product]) if params[:product]
-      @content_view ||= ContentViewFactory.create_os_content_view(params[:operatingsystem]) if params[:operatingsystem]
-      @content_view ||= ContentViewFactory.create_composite_content_view(params[:content_content_view_factory]) if params[:content_content_view_factory]
+      options = if params[:product]
+                  {:originator_id => params[:product], :originator_type => 'Content::Product'}
+                elsif params[:operatingsystem]
+                  {:originator_id => params[:operatingsystem], :originator_type => 'Operatingsystem'}
+                elsif params[:hostgroup]
+                  @hostgroup = Hostgroup.find_by_id(params[:hostgroup])
+                  {:originator_id => params[:hostgroup], :originator_type => 'Hostgroup'}
+                elsif params[:content_content_view_factory]
+                  params[:content_content_view_factory]
+                elsif params[:type].blank?
+                  process_error(:error_msg => _('Must provide a type'))
+                end
+      @factory = ContentViewFactory.new(options || {})
+      @content_view = @factory.try(:content_view) if @factory.originator_id
     end
 
     def create

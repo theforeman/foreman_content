@@ -23,7 +23,7 @@ module Content
     validates_presence_of :originator_id, :originator_type
 
     validates :name, :presence => true
-    validates_uniqueness_of :name, :scope => [:originator_type]
+    validates_uniqueness_of :name, :scope => [:originator_type, :originator_id]
     validates :feed, :presence => true, :uniqueness => true
     validates_inclusion_of :content_type,
                            :in          => TYPES,
@@ -44,13 +44,18 @@ module Content
     scope :kickstart, where(:content_type => KICKSTART_TYPE)
     scope :yum, where(:content_type => YUM_TYPE)
 
+    scope :for_content_views, lambda { |ids|
+      joins(:content_view_repository_clones).
+        where('content_content_view_repository_clones' => {:content_view_id => ids})
+    }
+
     def content_types
       TYPES
     end
 
     # The label is used as a repository label in a yum repo file.
     def to_label
-      "#{entity_name}-#{name}".parameterize
+      "#{entity_name}/#{name}"
     end
 
     #inhariters are expected to override this method

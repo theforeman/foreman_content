@@ -1,12 +1,23 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// the compiled file.
-//
-// WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
-// GO AFTER THE REQUIRES BELOW.
-//
+$(function () {
+  // Disable repository selection input based on checkbox
+  $('.repository_selection input:checkbox').click(function () {
+    var checked = $(this).is(':checked');
+    $(this).parent().find($(':input')).each (function ( index, input) {
+      $(input).attr('disabled', !checked);
+    });
+
+  });
+  // toggle repository ID's to send based on the repo type
+  $('.cv-repo-selection').change(function () {
+      enable_selected_repository(this);
+  });
+  $('.cv-repo-selection').change();
+});
+
+function enable_selected_repository(element) {
+  var select = $(element);
+  var id = select.attr('id').replace(/[^\d]/g, '');
+  var clone = select.val() == 'clone';
+  $('#clone-' + id).attr('disabled', !clone);
+  $('#latest-' + id).attr('disabled', clone);
+};

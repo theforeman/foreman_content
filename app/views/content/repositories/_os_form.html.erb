@@ -1,4 +1,3 @@
-<%= javascript 'content/content.js' %>
 <%= form_for @repository, :url => (@repository.new_record? ? repositories_path : repository_path(:id => @repository.id)) do |f| %>
   <%= base_errors_for @repository %>
   <ul class="nav nav-tabs" data-tabs="tabs">

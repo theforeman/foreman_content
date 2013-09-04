@@ -1,3 +1,5 @@
+<%= wizard_header 2, _('Select source type'), _('Select content'), _('Create') %>
+
 <%= form_for @content_view, :url => (@content_view.new_record? ? content_views_path : content_view_path(@content_view)) do |f| %>
   <%= base_errors_for @content_view %>
 
@@ -11,30 +13,31 @@
       <%= text_f f, :name, :value => @content_view.to_label %>
 
       <% if @content_view.new_record? %>
-        <% @content_view.source_repositories.each do |repo| %>
-          <%= f.hidden_field :source_repositories, :multiple => true, :value => repo.id %>
-        <% end if @content_view.source_repositories %>
-        <% @content_view.repository_clones.each do |repo| %>
-          <%= f.hidden_field :repository_clone_ids, :multiple => true, :value => repo.id %>
-        <% end if @content_view.repository_clones %>
-
         <%= f.hidden_field :originator_id, :value => @content_view.originator_id %>
         <%= f.hidden_field :originator_type, :value => @content_view.originator_type %>
       <% end %>
 
       <table class="table table-bordered">
         <tr>
+          <th></th>
           <th><%= _("Name") %></th>
           <th><%= _("State") %></th>
           <th><%= f.object.kind_of?(Content::Repository) ? _('Last Sync') : _('Last Publish') %></th>
           <th><%= _("Content type") %></th>
         </tr>
-        <% repositories(@content_view).each do |repository| %>
-          <tr>
-            <td><%= repository.name %></td>
-            <td><%= repository.try(:state) %></td>
-            <td><%= last_time(repository.kind_of?(Content::Repository) ? repository.last_sync : repository.last_published) %></td>
-            <td><%= repository.content_type %></td>
+        <% repositories.each do |repository| %>
+          <tr class='repository_selection'>
+            <td>
+              <% if @content_view.new_record? %>
+                <%= check_box_tag nil, repository.id, true %>
+                <%= f.hidden_field :repository_ids_to_clone, :value => repository.id, :multiple => true, :id => "clone-#{repository.id}",
+                                   :disabled => true %>
+                <%= f.hidden_field :repository_source_ids,   :value => repository.id, :multiple => true, :id => "latest-#{repository.id}",
+                                   :disabled => true %>
+                <%= select_tag(nil, options_for_type_selection(repository), {:class => 'cv-repo-selection span2', :id => "select-#{repository.id}"}) %>
+              <% end %>
+            </td>
+            <%= render :partial => 'content/repositories/repository', :locals => {:repository => repository} %>
           </tr>
         <% end %>
       </table>

@@ -1,3 +1,5 @@
+<%= javascript 'content/repository.js' %>
+
 <% title _("Edit Repository") %>
 <% if @repository.is_a? Content::Repository::OperatingSystem %>
   <%= render :partial => 'os_form' %>
