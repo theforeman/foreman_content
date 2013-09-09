@@ -2,7 +2,7 @@ $(function () {
   // Disable repository selection input based on checkbox
   $('.repository_selection input:checkbox').click(function () {
     var checked = $(this).is(':checked');
-    $(this).parent().find($(':input')).each (function ( index, input) {
+    $(this).parent().find($(':input')).not($(this)).each (function ( index, input) {
       $(input).attr('disabled', !checked);
     });
 
