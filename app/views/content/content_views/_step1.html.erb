@@ -1,16 +1,16 @@
 <%= wizard_header 1, _('Select source type'), _('Select content'), _('Create') %>
 <%= form_tag hash_for_new_content_view_path, :class => 'form-horizontal well', :method => :get do %>
   <% case params[:type] %>
-<% when 'product' %>
-    <%= field(nil, _('Product')) do
+  <% when 'product' %>
+    <%= field(nil, :product, :label => _('Product')) do
       select_tag('product', options_from_collection_for_select(Content::Product.has_repos, 'id', 'name'))
     end %>
   <% when 'operatingsystem' %>
-    <%= field(nil, _('Operating system')) do
+    <%= field(nil, :operatingsystem, :label => _('Operating system')) do
       select_tag('operatingsystem', options_from_collection_for_select(Redhat.has_repos, 'id', 'to_label'))
     end %>
   <% when 'hostgroup' %>
-    <%= field(nil, _('Host group')) do
+    <%= field(nil, :hostgroup, :label => _('Host group')) do
       select_tag('hostgroup', options_from_collection_for_select(accessible_hostgroups, 'id', 'to_label'))
     end %>
   <% end %>

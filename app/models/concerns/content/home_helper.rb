@@ -12,7 +12,7 @@ module Content::HomeHelper
         [_('Products'), :"content/products"],
         [_('Repositories'), :"content/repositories"],
         [_('Content Views'), :"content/content_views"],
-        [_('Gpg keys'), :"content/gpg_keys"]
+        [_('GPG Keys'), :"content/gpg_keys"]
     ]
     choices.insert(3, [:divider], [:group, _("Content"), content_group])
   end
