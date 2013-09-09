@@ -49,8 +49,8 @@ module Content
     # content view. The parent content view is one of the hostgroup parent content views.
     # A hostgroup may have number of content views representing different versions of that hostgroup content.
     def create_composite_content_view
-      clone_ids = Content::RepositoryClone.for_content_views([product_cv, os_cv]).pluck(:id)
-      source_ids = Content::Repository.for_content_views([product_cv, os_cv]).pluck(:id)
+      clone_ids = Content::RepositoryClone.for_content_views([product_cv, os_cv]).pluck('content_repository_clones.id')
+      source_ids = Content::Repository.for_content_views([product_cv, os_cv]).pluck('content_repositories.id')
       ContentView.new(:originator => originator,
                       :repository_clone_ids => clone_ids,
                       :repository_source_ids => source_ids,
